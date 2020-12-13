@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>How to let local images display on your hexo blog website | Herman-blog</title>
+    <meta name="author" content="Herman Teng" />
+    <meta name="keywords" content="Data, Analysis, JavaScript, Python, SQL, NoSQL, Web, Finance, Banking" />
+    <meta name="description" content="Hexo blog framework friendly supports markdown which is the most popular syntax for technical blog writing. When you try to illustrate some ideas, it’s common to use screenshot photos in your articles to get reader better understanding so that you ha" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+
+    
+    
+    <link rel="icon" href="/images/favicon1.ico">
+    
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'icomoon';
+        src: url("/fonts/icomoon.eot?q628ml");
+        src: url("/fonts/icomoon.eot?q628ml#iefix") format('embedded-opentype'),
+             url("/fonts/icomoon.ttf?q628ml") format('truetype'),
+             url("/fonts/icomoon.woff?q628ml") format('woff'),
+             url("/fonts/icomoon.svg?q628ml#icomoon") format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+    </style>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!--[if lt IE 9]><style type="text/css">.nav-inner {top:0;}.author-meta {position:static;top:0;}.search-form {height:36px;}</style><script type="text/javascript" src="https://unpkg.com/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+<meta name="generator" content="Hexo 5.2.0"></head>
+<body>
+
+    <main class="app">
+        <header id="header" class="header clearfix">
+    <div id="nav" class="nav">
+    <div class="nav-mobile">
+        <button id="open-panel" class="open-panel nav-mobile-item"><i class="icon-documents"></i></button>
+        <h1 class="nav-mobile-title nav-mobile-item">Herman-blog</h1>
+        <button id="open-menus" class="open-panel nav-mobile-item"><i class="icon-library"></i></button>
+    </div>
+
+    <nav id="nav-inner" class="nav-inner">
+        
+            <a class="nav-item" href="/">
+                <span class="nav-text">Home</span>
+            </a>
+        
+            <a class="nav-item" href="/categories/data">
+                <span class="nav-text">Data</span>
+            </a>
+        
+            <a class="nav-item" href="/categories/it">
+                <span class="nav-text">IT</span>
+            </a>
+        
+            <a class="nav-item" href="/tags">
+                <span class="nav-text">Tags</span>
+            </a>
+        
+            <a class="nav-item" href="/archives">
+                <span class="nav-text">Archives</span>
+            </a>
+        
+            <a class="nav-item" href="/about">
+                <span class="nav-text">About</span>
+            </a>
+        
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="https://hermanteng19.github.io"></form>
+
+        
+        
+        
+        
+
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Use-absolute-path-to-insert-image"><span class="toc-number">1.</span> <span class="toc-text">Use absolute path to insert image</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Use-relative-path-based-on-config-yml-file"><span class="toc-number">2.</span> <span class="toc-text">Use relative path based on _config.yml file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Use-online-image-management-tool"><span class="toc-number">3.</span> <span class="toc-text">Use online image management tool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A-small-thinking-about-Node-js-top-route-design-and-file-render"><span class="toc-number">4.</span> <span class="toc-text">A small thinking about Node.js top route design and file render</span></a></li></ol>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content">
+            <div id="wrapper" class="wrapper" style="max-width: 1200px">
+                <article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
+            How to let local images display on your hexo blog website
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="https://hermanteng19.github.io/2020/11/27/How-to-let-local-images-display-on-your-hexo-blog-website/index.html">
+    
+    <i class="icon-calendar vm"></i>
+    
+    <time class="vm" datetime="2020-11-27T19:30:32.000Z" itemprop="datePublished">2020-11-27</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag vm"></i>
+    <a class="article-tag-link" href="/tags/hexo-blog-online-image-config-Node-js-router/" rel="tag">hexo, blog, online image, config, Node.js, router</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <p>Hexo blog framework friendly supports markdown which is the most popular syntax for technical blog writing. When you try to illustrate some ideas, it’s common to use screenshot photos in your articles to get reader better understanding so that you have to insert images into your blog, unlike typing text content that is straight forward, inserting images and deploying them to public blog site might be some tricks there, let’s see some common scenarios on images display issue and how to resolved them.</p>
+<h2 id="Use-absolute-path-to-insert-image"><a href="#Use-absolute-path-to-insert-image" class="headerlink" title="Use absolute path to insert image"></a>Use absolute path to insert image</h2><p>The intuitive way for junior blogger is referencing absolute path + file name, I would say there is no any problem if the blog is only for local review or your local machine is a web server to host your blog website, otherwise, your images won’t be displayed on your public blog site after deployment if without any configuration. Like below shows when you use that way inert on your local blog, images can be displayed as expected</p>
+<a id="more"></a>
+
+<p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqaEe"><img src="https://p.130014.xyz/2020/11/28/absolutePath_image.png" alt="absolutePath_image.png"></a></p>
+<p>but it will cause issue on display when you deploy your article to public blog website like below shown</p>
+<p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqJqo"><img src="https://p.130014.xyz/2020/11/28/absolutePath_renderIssue.png" alt="absolutePath_renderIssue.png"></a></p>
+<h2 id="Use-relative-path-based-on-config-yml-file"><a href="#Use-relative-path-based-on-config-yml-file" class="headerlink" title="Use relative path based on _config.yml file"></a>Use relative path based on _config.yml file</h2><p>Actually, hexo blog is powered by Node.js in the backend, its general configuration file _config.yml shows the way to properly allocate your resources including image, css, font and js etc. By default, your images should be put into <code>blog/themes/your theme name/source/images</code> , when you reference it, use below syntax no matter you use Windows or Linux,</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">your image&#x27;s name</span>](<span class="link">/images/your_image_file_name.png</span>)</span><br></pre></td></tr></table></figure>
+
+<p>now, you can push your blog to public blog site and your images can be presented there well</p>
+<p><img src="https://p.130014.xyz/2020/11/28/image_showOnWeb.png" alt="image_showOnWeb.png"></p>
+<p>but the problem is you lose your sight on local but only are able to see on blog website after you deployment, that is not you really want like below shown</p>
+<p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqWO8"><img src="https://p.130014.xyz/2020/11/28/image_noShow_local.png" alt="image_noShow_local.png"></a></p>
+<h2 id="Use-online-image-management-tool"><a href="#Use-online-image-management-tool" class="headerlink" title="Use online image management tool"></a>Use online image management tool</h2><p>To be able to solve image display problem on both local and public site, the best way is utilize online image management website to upload your images then it will generate corresponding URLs for those photos, you can replace path name of your local images by URL. Now your image is going to be rendered by both your local markdown editor and web browser.</p>
+<p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqPNS"><img src="https://p.130014.xyz/2020/11/28/image_showOnLocal1.png" alt="image_showOnLocal1.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqEtR"><img src="https://p.130014.xyz/2020/11/28/image_showOnLocal2.png" alt="image_showOnLocal2.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqYD9"><img src="https://p.130014.xyz/2020/11/28/image_showOnWeb2.png" alt="image_showOnWeb2.png"></a></p>
+<p>Another advantage of managing your photos by online image tool is your images are in the cloud with permanent URLs so that you won’t lose them even something bad happened on your local machine.</p>
+<p>I use <a target="_blank" rel="noopener" href="https://www.wailian.work/">wailian.work</a> to manage my images, it’s free and provide markdown link for each of your uploaded picture.</p>
+<h2 id="A-small-thinking-about-Node-js-top-route-design-and-file-render"><a href="#A-small-thinking-about-Node-js-top-route-design-and-file-render" class="headerlink" title="A small thinking about Node.js top route design and file render"></a>A small thinking about Node.js top route design and file render</h2><p>The root cause of confusion here might be the Node.js route design, unlike Apache and Nginx web server which come with web container so that the route can be your local folder path name and render your local html file in the folder, in this case, you do tell the file local path from URL address, but for Node.js, it doesn’t have web container, therefore, we have to design route for local web files, in other words, you are not able to tell the local file path by URL address for Node.js web server. Let’s see an example</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">&#x27;url&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">exports</span>.static = <span class="function"><span class="keyword">function</span> (<span class="params">request, response, staticPath</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> pathname = url.parse(request.url).pathname;</span><br><span class="line">    pathname = pathname == <span class="string">&#x27;/&#x27;</span> ? <span class="string">&#x27;/index.html&#x27;</span> : pathname;</span><br><span class="line">    <span class="keyword">let</span> extname = path.extname(pathname);</span><br><span class="line">    <span class="keyword">if</span> (pathname != <span class="string">&#x27;/favicon.ico&#x27;</span>) &#123;</span><br><span class="line">        fs.readFile(<span class="string">&#x27;./&#x27;</span> + staticPath + pathname, <span class="keyword">async</span> (err, data) =&gt; &#123; </span><br><span class="line">            <span class="keyword">if</span> (!err) &#123;</span><br><span class="line">                <span class="keyword">let</span> mime = <span class="keyword">await</span> getFileMime(extname.split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">1</span>]);</span><br><span class="line">                response.writeHead(<span class="number">200</span>, &#123; <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">`<span class="subst">$&#123;mime&#125;</span>; charset=&quot;utf-8&quot;`</span> &#125;);</span><br><span class="line">                response.end(data);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Assume user request images, the URL is probably like <a target="_blank" rel="noopener" href="https://yourdomainname/images">https://yourdomainname/images</a>, but in the backend, in fact the Node.js read file from path <code>&#39;./&#39; + staticPath + pathname</code> such as <code>/root/web_project1/static/images</code>. URL address doesn’t reflect file path, they are relatively independent in Node.js, by knowing that, we are going to dig a little deeper to take a look at _config.yml file and come up with idea why browser is able to render out to image file but text editor can’t. Open _config.yml file </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ./blog/_config.yml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## If your site is put in a subdirectory, set url as &#x27;http://example.com/child&#x27; and root as &#x27;/child&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://hermanteng19.github.io</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:year/:month/:day/:title/</span></span><br></pre></td></tr></table></figure>
+
+<p>here list the route on your blog site which should be <code>https://hermanteng19.github.io/</code> as home page and corresponding html file should be put into “/“ directory, what about images file? It is going to be “/images”, so far, we know the directory in below actually is route or web request URL, that is why text editor is not able to find the real file path.</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">mysql-connection</span>](<span class="link">/images/mysql_conn_established.png</span>)</span><br></pre></td></tr></table></figure>
+
+<p>But, you might still confuse about why browser can render the image file, now let’s continue to see what’s going on web server. Enter your local hexo blog path</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l ./blog</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QD2Meq"><img src="https://p.130014.xyz/2020/11/28/root_public_folder.png" alt="root_public_folder.png"></a></p>
+<p>you can find there is <code>public/</code> folder which is your blog website “/root” folder, all web files such as html, css, js, image, font are in there, let’s enter it and take a look</p>
+<p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqhRc"><img src="https://p.130014.xyz/2020/11/28/root_public_images_folder.png" alt="root_public_images_folder.png"></a></p>
+<p><code>images/</code> folder is on the list, continue to drill down, <code>mysql_conn_established.png</code> file is on the list. So now you may be clear by Node.js route design, when web browser visits images on your blog website, it actually read the files from “/public/images/“, not from your local file absolute path like “themes/your_theme_name/source/images”.</p>
+<p>It does cause some confusion by this special type of route design, but in the other way, I would say it’s quite smart, you can design out a very nice, neat and beautiful URL for your website, which would bring very good user experience and impress website visitors. Think about no matter how ugly your local file path is like <code>/root/jfdioaw/_jfidosjo_jfi123/oneMoreFolder/13u8030/product_1.html</code>, but your website URL always looks like <code>http://yourdomainname/business/product/product_1.html</code>.</p>
+<p>At last, I want to thank <a target="_blank" rel="noopener" href="https://www.codesheep.cn/">CodeSheep</a> for help me with the idea of leveraging online photo mangement tool to solve this problem!</p>
+
+        
+    </section>
+</article>
+
+
+
+<a id="pagenext" href="/2020/11/25/Remote-Connect-MySQL-Server-from-Client-Machine-Setup/" class="article-next" title="Remote Connect MySQL Server from Client Machine Setup"><i class="icon-arrow-right"></i></a>
+
+
+<a id="pageprev" href="/2020/11/30/A-little-thought-on-SQL-query-performance-optimization-1/" class="article-prev" title="A little thought on SQL query performance optimization 1"><i class="icon-arrow-left"></i></a>
+
+
+
+<div class="comments">
+    <div id="comments"></div>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+    new Gitalk({
+        clientID: "2197645fbbf6774a6cbe",
+        clientSecret: "a880ffb6977f50f034798850af3853412f912480",
+        repo: "hermanteng19.github.io",
+        owner: "hermanteng19",
+        admin: ["hermanteng19"],
+        id: "cbb6de145b27fc5a0ac067e6d2aedb60",
+        distractionFreeMode: true,
+        title: "How to let local images display on your hexo blog website",
+        body: "https://hermanteng19.github.io/2020/11/27/How-to-let-local-images-display-on-your-hexo-blog-website/",
+        labels: ["hexo, blog, online image, config, Node.js, router"]
+    }).render('comments');
+    </script>
+</div>
+
+
+
+            </div>
+        </div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+
+    
+</footer>
+
+    </main>
+
+    <script type="text/javascript" src="https://unpkg.com/jquery@1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        var nodes = {
+            nav: $('#nav'),
+            aside: $('#aside'),
+            asideInner: $('#aside-inner'),
+            navInner: $('#nav-inner')
+        };
+
+        var doing = false;
+        nodes.asideInner.on('webkitAnimationEnd mozAnimationEnd oAnimationEnd oanimationend animationend', function() {
+            if (nodes.aside.hasClass('mobile-open')) {
+                nodes.aside.removeClass('mobile-open');
+            } else {
+                nodes.aside.removeClass('mobile-close panel-show');
+            }
+            doing = false;
+        });
+        $('#open-panel, #aside-mask').on('click', function() {
+            if (doing) {
+                return;
+            }
+
+            if (nodes.aside.hasClass('panel-show')) {
+                nodes.aside.addClass('mobile-close');
+            } else {
+                nodes.aside.addClass('mobile-open panel-show');
+            }
+        });
+        $('#open-menus').on('click', function() {
+            nodes.navInner.slideToggle('normal', slideDone);
+        });
+
+        if (window.innerWidth <= 960) {
+            setTimeout(function() {
+                nodes.navInner.slideUp('normal', slideDone);
+            }, 3000);
+        }
+
+        function slideDone() {
+            if (nodes.navInner.css('display') !== 'none') {
+                nodes.navInner.css('display', '');
+            }
+        }
+
+        $(window).on('resize', function() {
+            if ($(this).width() > 960) {
+                nodes.navInner.css('display', '');
+            }
+        });
+    });
+    </script>
+    
+        
+<script src="/js/scrollspy.min.js"></script>
+
+        <script type="text/javascript">
+        $(document.body).scrollspy({target: '#aside-inner'});
+
+        $(window).on('resize', function() {
+            var hw = $('#header').width();
+            var ww = $('#wrapper').width();
+            var space = ($(this).width() - hw - ww) / 2 / 2;
+
+            var pageprev = $('#pageprev');
+            var pagenext = $('#pagenext');
+            var avg = (pageprev.width() + pagenext.width()) / 2
+
+            if(space > avg) {
+                var len = space - avg / 2;
+                var styles = {position: 'fixed', top: '50%', marginTop: - (pageprev.width() + pagenext.width()) / 4}
+                pageprev.css($.extend({left: hw + len}, styles));
+                pagenext.css($.extend({right: len}, styles));
+            } else {
+                pageprev.removeAttr('style');
+                pagenext.removeAttr('style');
+            }
+        }).trigger('resize');
+        </script>
+    
+
+</body>
+</html>

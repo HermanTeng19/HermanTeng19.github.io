@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>Linux network auto boot and restart | Herman-blog</title>
+    <meta name="author" content="Herman Teng" />
+    <meta name="keywords" content="Data, Analysis, JavaScript, Python, SQL, NoSQL, Web, Finance, Banking" />
+    <meta name="description" content="Centos 7 network is disabled by default after installation and initialization, which causes network connection can not be made until you manually turn on itThat is such annoying when you usually use SSH tool remote connect to centos workstation or se" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+
+    
+    
+    <link rel="icon" href="/images/favicon1.ico">
+    
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'icomoon';
+        src: url("/fonts/icomoon.eot?q628ml");
+        src: url("/fonts/icomoon.eot?q628ml#iefix") format('embedded-opentype'),
+             url("/fonts/icomoon.ttf?q628ml") format('truetype'),
+             url("/fonts/icomoon.woff?q628ml") format('woff'),
+             url("/fonts/icomoon.svg?q628ml#icomoon") format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+    </style>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!--[if lt IE 9]><style type="text/css">.nav-inner {top:0;}.author-meta {position:static;top:0;}.search-form {height:36px;}</style><script type="text/javascript" src="https://unpkg.com/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+<meta name="generator" content="Hexo 5.2.0"></head>
+<body>
+
+    <main class="app">
+        <header id="header" class="header clearfix">
+    <div id="nav" class="nav">
+    <div class="nav-mobile">
+        <button id="open-panel" class="open-panel nav-mobile-item"><i class="icon-documents"></i></button>
+        <h1 class="nav-mobile-title nav-mobile-item">Herman-blog</h1>
+        <button id="open-menus" class="open-panel nav-mobile-item"><i class="icon-library"></i></button>
+    </div>
+
+    <nav id="nav-inner" class="nav-inner">
+        
+            <a class="nav-item" href="/">
+                <span class="nav-text">Home</span>
+            </a>
+        
+            <a class="nav-item" href="/categories/data">
+                <span class="nav-text">Data</span>
+            </a>
+        
+            <a class="nav-item" href="/categories/it">
+                <span class="nav-text">IT</span>
+            </a>
+        
+            <a class="nav-item" href="/tags">
+                <span class="nav-text">Tags</span>
+            </a>
+        
+            <a class="nav-item" href="/archives">
+                <span class="nav-text">Archives</span>
+            </a>
+        
+            <a class="nav-item" href="/about">
+                <span class="nav-text">About</span>
+            </a>
+        
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="https://hermanteng19.github.io"></form>
+
+        
+        
+        
+        
+
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Auto-Boot-Network"><span class="toc-number">1.</span> <span class="toc-text">Auto Boot Network</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VIM-open-config-file-etc-sysconfig-network-scripts-ifcfg-ens33"><span class="toc-number">1.1.</span> <span class="toc-text">VIM open config file: &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-ens33</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Revise-the-ONBOOT-value-to-be-%E2%80%9Cyes%E2%80%9D"><span class="toc-number">1.2.</span> <span class="toc-text">Revise the ONBOOT value to be “yes”</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Save-and-quit-config-file-by-wq-vim-command"><span class="toc-number">1.3.</span> <span class="toc-text">Save and quit config file by :wq vim command</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Restart-Network"><span class="toc-number">2.</span> <span class="toc-text">Restart Network</span></a></li></ol>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content">
+            <div id="wrapper" class="wrapper" style="max-width: 1200px">
+                <article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
+            Linux network auto boot and restart
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="https://hermanteng19.github.io/2020/11/25/Linux-network-auto-boot-and-restart/index.html">
+    
+    <i class="icon-calendar vm"></i>
+    
+    <time class="vm" datetime="2020-11-25T18:59:22.000Z" itemprop="datePublished">2020-11-25</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag vm"></i>
+    <a class="article-tag-link" href="/tags/Linux-Centos-network-config/" rel="tag">Linux, Centos, network, config</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <p>Centos 7 network is disabled by default after installation and initialization, which causes network connection can not be made until you manually turn on it</p>
+<p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqfir"><img src="https://p.130014.xyz/2020/11/28/centos7_network_icon.png" alt="centos7_network_icon.png"></a></p>
+<p>That is such <em><strong>annoying</strong></em> when you usually use SSH tool remote connect to centos workstation or server, so it’s quite necessary to turn on the network automatically every time reboot machine or VM. To accomplish that, we need to modify the network configuration file.</p>
+<a id="more"></a>
+
+<h3 id="Auto-Boot-Network"><a href="#Auto-Boot-Network" class="headerlink" title="Auto Boot Network"></a>Auto Boot Network</h3><h4 id="VIM-open-config-file-etc-sysconfig-network-scripts-ifcfg-ens33"><a href="#VIM-open-config-file-etc-sysconfig-network-scripts-ifcfg-ens33" class="headerlink" title="VIM open config file: /etc/sysconfig/network-scripts/ifcfg-ens33"></a>VIM open config file: /etc/sysconfig/network-scripts/ifcfg-ens33</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysconfig/network-scripts/ifcfg-ens33</span><br></pre></td></tr></table></figure>
+
+<h4 id="Revise-the-ONBOOT-value-to-be-“yes”"><a href="#Revise-the-ONBOOT-value-to-be-“yes”" class="headerlink" title="Revise the ONBOOT value to be “yes”"></a>Revise the <code>ONBOOT</code> value to be “yes”</h4><p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqpMV"><img src="https://p.130014.xyz/2020/11/28/centos7_network_setting.png" alt="centos7_network_setting.png"></a></p>
+<h4 id="Save-and-quit-config-file-by-wq-vim-command"><a href="#Save-and-quit-config-file-by-wq-vim-command" class="headerlink" title="Save and quit config file by :wq vim command"></a>Save and quit config file by <code>:wq</code> vim command</h4><h3 id="Restart-Network"><a href="#Restart-Network" class="headerlink" title="Restart Network"></a>Restart Network</h3><p>To be able to make that change taking effect, network needs to be restarted by below command</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart network.service</span><br></pre></td></tr></table></figure>
+
+<p>something trick here is some blog articles mention that part is only <code>systemctl restart</code>, which won’t work if there is no <code>network.service</code>, I confuse and spend many time to figure out that, thanks to <a target="_blank" rel="noopener" href="https://www.codesheep.cn/">CodeSheep</a> whose video shed the light on it and help me to solve that problem.</p>
+
+        
+    </section>
+</article>
+
+
+
+
+<a id="pageprev" href="/2020/11/25/Remote-Connect-MySQL-Server-from-Client-Machine-Setup/" class="article-prev" title="Remote Connect MySQL Server from Client Machine Setup"><i class="icon-arrow-left"></i></a>
+
+
+
+<div class="comments">
+    <div id="comments"></div>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+    new Gitalk({
+        clientID: "2197645fbbf6774a6cbe",
+        clientSecret: "a880ffb6977f50f034798850af3853412f912480",
+        repo: "hermanteng19.github.io",
+        owner: "hermanteng19",
+        admin: ["hermanteng19"],
+        id: "c14682c4c0efc49121532e25aac83a65",
+        distractionFreeMode: true,
+        title: "Linux network auto boot and restart",
+        body: "https://hermanteng19.github.io/2020/11/25/Linux-network-auto-boot-and-restart/",
+        labels: ["Linux, Centos, network, config"]
+    }).render('comments');
+    </script>
+</div>
+
+
+
+            </div>
+        </div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+
+    
+</footer>
+
+    </main>
+
+    <script type="text/javascript" src="https://unpkg.com/jquery@1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        var nodes = {
+            nav: $('#nav'),
+            aside: $('#aside'),
+            asideInner: $('#aside-inner'),
+            navInner: $('#nav-inner')
+        };
+
+        var doing = false;
+        nodes.asideInner.on('webkitAnimationEnd mozAnimationEnd oAnimationEnd oanimationend animationend', function() {
+            if (nodes.aside.hasClass('mobile-open')) {
+                nodes.aside.removeClass('mobile-open');
+            } else {
+                nodes.aside.removeClass('mobile-close panel-show');
+            }
+            doing = false;
+        });
+        $('#open-panel, #aside-mask').on('click', function() {
+            if (doing) {
+                return;
+            }
+
+            if (nodes.aside.hasClass('panel-show')) {
+                nodes.aside.addClass('mobile-close');
+            } else {
+                nodes.aside.addClass('mobile-open panel-show');
+            }
+        });
+        $('#open-menus').on('click', function() {
+            nodes.navInner.slideToggle('normal', slideDone);
+        });
+
+        if (window.innerWidth <= 960) {
+            setTimeout(function() {
+                nodes.navInner.slideUp('normal', slideDone);
+            }, 3000);
+        }
+
+        function slideDone() {
+            if (nodes.navInner.css('display') !== 'none') {
+                nodes.navInner.css('display', '');
+            }
+        }
+
+        $(window).on('resize', function() {
+            if ($(this).width() > 960) {
+                nodes.navInner.css('display', '');
+            }
+        });
+    });
+    </script>
+    
+        
+<script src="/js/scrollspy.min.js"></script>
+
+        <script type="text/javascript">
+        $(document.body).scrollspy({target: '#aside-inner'});
+
+        $(window).on('resize', function() {
+            var hw = $('#header').width();
+            var ww = $('#wrapper').width();
+            var space = ($(this).width() - hw - ww) / 2 / 2;
+
+            var pageprev = $('#pageprev');
+            var pagenext = $('#pagenext');
+            var avg = (pageprev.width() + pagenext.width()) / 2
+
+            if(space > avg) {
+                var len = space - avg / 2;
+                var styles = {position: 'fixed', top: '50%', marginTop: - (pageprev.width() + pagenext.width()) / 4}
+                pageprev.css($.extend({left: hw + len}, styles));
+                pagenext.css($.extend({right: len}, styles));
+            } else {
+                pageprev.removeAttr('style');
+                pagenext.removeAttr('style');
+            }
+        }).trigger('resize');
+        </script>
+    
+
+</body>
+</html>

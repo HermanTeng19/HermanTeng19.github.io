@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>A little thought on SQL query performance optimization 1 | Herman-blog</title>
+    <meta name="author" content="Herman Teng" />
+    <meta name="keywords" content="Data, Analysis, JavaScript, Python, SQL, NoSQL, Web, Finance, Banking" />
+    <meta name="description" content="Working with data and database, writing query is daily routine, query running time might be big different for different queries but serve the same purpose, which shows query performance is not 100 percent determined by database system configuration, " />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+
+    
+    
+    <link rel="icon" href="/images/favicon1.ico">
+    
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'icomoon';
+        src: url("/fonts/icomoon.eot?q628ml");
+        src: url("/fonts/icomoon.eot?q628ml#iefix") format('embedded-opentype'),
+             url("/fonts/icomoon.ttf?q628ml") format('truetype'),
+             url("/fonts/icomoon.woff?q628ml") format('woff'),
+             url("/fonts/icomoon.svg?q628ml#icomoon") format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+    </style>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!--[if lt IE 9]><style type="text/css">.nav-inner {top:0;}.author-meta {position:static;top:0;}.search-form {height:36px;}</style><script type="text/javascript" src="https://unpkg.com/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+<meta name="generator" content="Hexo 5.2.0"></head>
+<body>
+
+    <main class="app">
+        <header id="header" class="header clearfix">
+    <div id="nav" class="nav">
+    <div class="nav-mobile">
+        <button id="open-panel" class="open-panel nav-mobile-item"><i class="icon-documents"></i></button>
+        <h1 class="nav-mobile-title nav-mobile-item">Herman-blog</h1>
+        <button id="open-menus" class="open-panel nav-mobile-item"><i class="icon-library"></i></button>
+    </div>
+
+    <nav id="nav-inner" class="nav-inner">
+        
+            <a class="nav-item" href="/">
+                <span class="nav-text">Home</span>
+            </a>
+        
+            <a class="nav-item" href="/categories/data">
+                <span class="nav-text">Data</span>
+            </a>
+        
+            <a class="nav-item" href="/categories/it">
+                <span class="nav-text">IT</span>
+            </a>
+        
+            <a class="nav-item" href="/tags">
+                <span class="nav-text">Tags</span>
+            </a>
+        
+            <a class="nav-item" href="/archives">
+                <span class="nav-text">Archives</span>
+            </a>
+        
+            <a class="nav-item" href="/about">
+                <span class="nav-text">About</span>
+            </a>
+        
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="https://hermanteng19.github.io"></form>
+
+        
+        
+        
+        
+
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Before-writing-a-query"><span class="toc-number">1.</span> <span class="toc-text">Before writing a query</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL-query-optimization-tips"><span class="toc-number">2.</span> <span class="toc-text">SQL query optimization tips</span></a></li></ol>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content">
+            <div id="wrapper" class="wrapper" style="max-width: 1200px">
+                <article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
+            A little thought on SQL query performance optimization 1
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="https://hermanteng19.github.io/2020/11/30/A-little-thought-on-SQL-query-performance-optimization-1/index.html">
+    
+    <i class="icon-calendar vm"></i>
+    
+    <time class="vm" datetime="2020-12-01T01:44:25.000Z" itemprop="datePublished">2020-11-30</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag vm"></i>
+    <a class="article-tag-link" href="/tags/SQL-query-SQL-Server-optimization/" rel="tag">SQL, query, SQL Server, optimization</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <p>Working with data and database, writing query is daily routine, query running time might be big different for different queries but serve the same purpose, which shows query performance is not 100 percent determined by database system configuration, server hard ware, table index and statistics etc. but how well do you use SQL to construct your query. </p>
+<p>To satisfy user strong demand, we built sandbox database on production for business partners to server their needs of BI reporting and business analytical, in the meanwhile, we are also in charge of database maintenance and monitoring so that we got chance to collect all kinds of user queries. Some of them even crash the system or drag the database performance down apparently, here I want to share my thinking of query optimization on large amount of data.</p>
+<h2 id="Before-writing-a-query"><a href="#Before-writing-a-query" class="headerlink" title="Before writing a query"></a>Before writing a query</h2><p>Just like a project, a query is able to achieve the things with backend business logics even if it is small, so make a plan before creation is very necessary to be able to let the query return result in flash and only consume minimum system resources.</p>
+<ul>
+<li>What level detail of data do you want to query from? Business data is built on certain level, e.g. in common scenario, there are customer level, account level and transaction level data. It’s better clarify target data is on which level or mix different level.</li>
+<li>What the time scope? The data amount volume would be big if you want to query multiple years even months, so if you evaluate the data is big, it’s better use loop or paging technic instead of returning outcome in one single page.</li>
+<li>What are query tables look like? A table contains a lot of information, not only business attributes or columns but data type, keys, index, constraints, triggers. Familiar with table structure is going to give additional benefits when you write your queries against those tables.</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="SQL-query-optimization-tips"><a href="#SQL-query-optimization-tips" class="headerlink" title="SQL query optimization tips"></a>SQL query optimization tips</h2><ul>
+<li><strong>Correlated and uncorrelated subquery</strong></li>
+</ul>
+<p>Business often asks about the highest transaction information in terms of product, product group, merchant category etc. in certain month or quarter. For this kind of request is not straight forward to be solved by single select from query but it needs subquery. Now let’s see what I got from a business partner</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> tran_date, Product_cd, Merchant_Name, Trans_Amt</span><br><span class="line"><span class="keyword">from</span> trans a</span><br><span class="line"><span class="keyword">where</span> tran_date <span class="keyword">between</span> <span class="string">&#x27;2020-10-01&#x27;</span> <span class="keyword">and</span> <span class="string">&#x27;2020-10-31&#x27;</span> <span class="keyword">and</span> trans_Amt=(</span><br><span class="line">	<span class="keyword">select</span> <span class="keyword">Max</span>(b.Trans_Amt)</span><br><span class="line">	<span class="keyword">from</span> trans b</span><br><span class="line">    <span class="keyword">where</span> a.product_cd=b.product_cd <span class="keyword">and</span> tran_date <span class="keyword">between</span> <span class="string">&#x27;2020-10-01&#x27;</span> <span class="keyword">and</span> <span class="string">&#x27;2020-10-31&#x27;</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> Product_cd</span><br></pre></td></tr></table></figure>
+
+<p>subquery is correlated with main query so <code>trans</code> data is loaded into memory again and make a calculation to return data to main query, that query execution time is 32s based on 90mm data. What if change correlated to uncorrelated subquery like below</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> tran_date, Product_cd, Merchant_Name, Trans_Amt</span><br><span class="line"><span class="keyword">from</span> trans a</span><br><span class="line"><span class="keyword">join</span> (</span><br><span class="line"><span class="keyword">select</span> Product_cd, <span class="keyword">Max</span>(Trans_Amt) <span class="keyword">as</span> Trans_Amt, tran_date</span><br><span class="line">    <span class="keyword">from</span> trans</span><br><span class="line">    <span class="keyword">where</span> tran_date <span class="keyword">between</span> <span class="string">&#x27;2020-10-01&#x27;</span> <span class="keyword">and</span> <span class="string">&#x27;2020-10-31&#x27;</span></span><br><span class="line">    <span class="keyword">group</span> <span class="keyword">by</span> Producct_cd, tran_date</span><br><span class="line">) <span class="keyword">as</span> b</span><br><span class="line"><span class="keyword">on</span> a.Product_cd=b.Product_cd <span class="keyword">and</span> a.Trans_Amt=b.Trans_Amt <span class="keyword">and</span> a.tran_date=b.tran_date</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> a.Product_cd</span><br></pre></td></tr></table></figure>
+
+<p>the query execution time reduce to 26s.</p>
+<ul>
+<li><strong>Exists clause and table join</strong></li>
+</ul>
+<p>The most active accounts and their corresponding spending amount is another important KPI for product manage from account management perspective, additionally, if some condition applied such as account opened on certain month, we got the query from one business partner using <code>exists</code> statement down below</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> acct_id, trans_dt,<span class="keyword">count</span>(*) <span class="keyword">as</span> num_trans, <span class="keyword">sum</span>(trans_amt) <span class="keyword">as</span> tot_trans_amt</span><br><span class="line"><span class="keyword">from</span> trans a</span><br><span class="line"><span class="keyword">where</span> date_key=<span class="number">202010</span> <span class="keyword">and</span> <span class="keyword">exists</span>(</span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> acct b <span class="keyword">where</span> a.date_key=b.date_key <span class="keyword">and</span> a.acct_id=b.acct_id <span class="keyword">and</span> <span class="keyword">year</span>(acct_open_dt)*<span class="number">100</span>+<span class="keyword">month</span>(acct_open_dt)&gt;=<span class="number">202009</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> trans_dt, acct_id</span><br><span class="line"><span class="keyword">having</span> <span class="keyword">count</span>(acct_id)&gt;<span class="number">10</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> num_trans <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+
+<p>from the query structure, we might be able to tell <code>exists</code> statement was put in <code>where</code> clause to get the account open date, its execution time is 13s, but it’s obviously not thinking about the whole business logic before, if the query changed to get target accounts for account open date first then did the calculation, the execution time will reduce to 3s like below</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.acct_id, a.trans_dt, <span class="keyword">count</span>(*) <span class="keyword">as</span> num_trans, <span class="keyword">sum</span>(trans_amt) <span class="keyword">as</span> tot_trans_amt</span><br><span class="line"><span class="keyword">from</span> trans a <span class="keyword">join</span> acct b <span class="keyword">on</span> a.acct_id=b.acct_id <span class="keyword">and</span> a.date_key=b.date_key</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">year</span>(b.acct_open_dt)*<span class="number">100</span>+<span class="keyword">month</span>(b.acct_open_dt)&gt;=<span class="number">202009</span> <span class="keyword">and</span> a.date_key=<span class="number">202010</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.trans_dt, a.acct_id</span><br><span class="line"><span class="keyword">having</span> <span class="keyword">count</span>(a.acct_id)&gt;<span class="number">10</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> num_trans <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Reduce the data scope by subquery</strong></li>
+</ul>
+<p>It’s very necessary to think about your query data scope first when you do a bunch of left outer join, especially, data volume is quite big on your main left table . Below query does a series left join by using all full tables data, but based on business requirement, only partial data is required on the major left table, so it cause somehow resources wasted in reflect on the execution time of 7s</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.*</span><br><span class="line"><span class="keyword">from</span> wfs_trans a</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> credit_decision b <span class="keyword">on</span> a.tran_id=b.tran_id</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> finance_request c <span class="keyword">on</span> a.req_id=c.req_id</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">cast</span>(a.creation_date <span class="keyword">as</span> <span class="built_in">date</span>)&gt;=<span class="string">&#x27;2019-01-01&#x27;</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> creation_date <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+
+<p>after revised above query on left table, the execution time reduced to 5s (2000ms)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.*</span><br><span class="line"><span class="keyword">from</span> (</span><br><span class="line"><span class="keyword">select</span> *</span><br><span class="line">    <span class="keyword">from</span> wfs_trans </span><br><span class="line">    <span class="keyword">where</span> <span class="keyword">cast</span>(a.creation_date <span class="keyword">as</span> <span class="built_in">date</span>)&gt;=<span class="string">&#x27;2019-01-01&#x27;</span></span><br><span class="line">) <span class="keyword">as</span> a</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> credit_decision b <span class="keyword">on</span> a.tran_id=b.tran_id</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> finance_request c <span class="keyword">on</span> a.req_id=c.req_id</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> a.creation_date <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Paging browse data</strong></li>
+</ul>
+<p>Business users sometime complaint the SSRS or Power BI report is slow when they browse data by skipping pages, that is not the programming problem because on the backend the query to support the BI report like below</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> prod_cd, post_dt, tran_dt, tran_amt</span><br><span class="line"><span class="keyword">from</span> trans</span><br><span class="line"><span class="keyword">where</span> date_key=<span class="number">202010</span> <span class="keyword">and</span> prod_cd=<span class="string">&#x27;ABCD&#x27;</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> post_dt</span><br><span class="line"><span class="keyword">offset</span> <span class="number">1000000</span> <span class="keyword">rows</span> <span class="keyword">fetch</span> <span class="keyword">next</span> <span class="number">100</span> <span class="keyword">only</span>;</span><br></pre></td></tr></table></figure>
+
+<p>that will take 22s to return results based on 80mm data in single month. Thing thing is even the data is ordered by index column post_dt, database engine doesn’t know where is 1000000 row, it needs to recalculate again, so to answer that business concern, we recommend to apply some conditions parameter then start to browse data like below</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> prod_cd, post_dt, tran_dt, tran_amt</span><br><span class="line"><span class="keyword">from</span> trans</span><br><span class="line"><span class="keyword">where</span> date_key=<span class="number">202010</span> <span class="keyword">and</span> prod_cd=<span class="string">&#x27;ABCD&#x27;</span> <span class="keyword">and</span> post_dt=<span class="string">&#x27;2020-10-15&#x27;</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> post_dt</span><br><span class="line"><span class="keyword">offset</span> <span class="number">1000</span> <span class="keyword">rows</span> <span class="keyword">fetch</span> <span class="keyword">next</span> <span class="number">100</span> <span class="keyword">only</span>;</span><br></pre></td></tr></table></figure>
+
+<p>by this way, the report will be presented by less than 1s.</p>
+
+        
+    </section>
+</article>
+
+
+
+<a id="pagenext" href="/2020/11/27/How-to-let-local-images-display-on-your-hexo-blog-website/" class="article-next" title="How to let local images display on your hexo blog website"><i class="icon-arrow-right"></i></a>
+
+
+<a id="pageprev" href="/2020/12/02/Sandbox-solution-for-BI-reporting-and-business-analytics/" class="article-prev" title="Sandbox solution for BI reporting and business analytics"><i class="icon-arrow-left"></i></a>
+
+
+
+<div class="comments">
+    <div id="comments"></div>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+    new Gitalk({
+        clientID: "2197645fbbf6774a6cbe",
+        clientSecret: "a880ffb6977f50f034798850af3853412f912480",
+        repo: "hermanteng19.github.io",
+        owner: "hermanteng19",
+        admin: ["hermanteng19"],
+        id: "0fd4e53fb7d0c4a926b11617c1f3a433",
+        distractionFreeMode: true,
+        title: "A little thought on SQL query performance optimization 1",
+        body: "https://hermanteng19.github.io/2020/11/30/A-little-thought-on-SQL-query-performance-optimization-1/",
+        labels: ["SQL, query, SQL Server, optimization"]
+    }).render('comments');
+    </script>
+</div>
+
+
+
+            </div>
+        </div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+
+    
+</footer>
+
+    </main>
+
+    <script type="text/javascript" src="https://unpkg.com/jquery@1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        var nodes = {
+            nav: $('#nav'),
+            aside: $('#aside'),
+            asideInner: $('#aside-inner'),
+            navInner: $('#nav-inner')
+        };
+
+        var doing = false;
+        nodes.asideInner.on('webkitAnimationEnd mozAnimationEnd oAnimationEnd oanimationend animationend', function() {
+            if (nodes.aside.hasClass('mobile-open')) {
+                nodes.aside.removeClass('mobile-open');
+            } else {
+                nodes.aside.removeClass('mobile-close panel-show');
+            }
+            doing = false;
+        });
+        $('#open-panel, #aside-mask').on('click', function() {
+            if (doing) {
+                return;
+            }
+
+            if (nodes.aside.hasClass('panel-show')) {
+                nodes.aside.addClass('mobile-close');
+            } else {
+                nodes.aside.addClass('mobile-open panel-show');
+            }
+        });
+        $('#open-menus').on('click', function() {
+            nodes.navInner.slideToggle('normal', slideDone);
+        });
+
+        if (window.innerWidth <= 960) {
+            setTimeout(function() {
+                nodes.navInner.slideUp('normal', slideDone);
+            }, 3000);
+        }
+
+        function slideDone() {
+            if (nodes.navInner.css('display') !== 'none') {
+                nodes.navInner.css('display', '');
+            }
+        }
+
+        $(window).on('resize', function() {
+            if ($(this).width() > 960) {
+                nodes.navInner.css('display', '');
+            }
+        });
+    });
+    </script>
+    
+        
+<script src="/js/scrollspy.min.js"></script>
+
+        <script type="text/javascript">
+        $(document.body).scrollspy({target: '#aside-inner'});
+
+        $(window).on('resize', function() {
+            var hw = $('#header').width();
+            var ww = $('#wrapper').width();
+            var space = ($(this).width() - hw - ww) / 2 / 2;
+
+            var pageprev = $('#pageprev');
+            var pagenext = $('#pagenext');
+            var avg = (pageprev.width() + pagenext.width()) / 2
+
+            if(space > avg) {
+                var len = space - avg / 2;
+                var styles = {position: 'fixed', top: '50%', marginTop: - (pageprev.width() + pagenext.width()) / 4}
+                pageprev.css($.extend({left: hw + len}, styles));
+                pagenext.css($.extend({right: len}, styles));
+            } else {
+                pageprev.removeAttr('style');
+                pagenext.removeAttr('style');
+            }
+        }).trigger('resize');
+        </script>
+    
+
+</body>
+</html>

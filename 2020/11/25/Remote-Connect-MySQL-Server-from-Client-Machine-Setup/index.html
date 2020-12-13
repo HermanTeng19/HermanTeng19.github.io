@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>Remote Connect MySQL Server from Client Machine Setup | Herman-blog</title>
+    <meta name="author" content="Herman Teng" />
+    <meta name="keywords" content="Data, Analysis, JavaScript, Python, SQL, NoSQL, Web, Finance, Banking" />
+    <meta name="description" content="You can only connect to MySQL Server from localhost after MySQL installation by default, but in production, all MySQL clients remotely connect to server, for simulating real production environment in your home network, some configurations need to be " />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+
+    
+    
+    <link rel="icon" href="/images/favicon1.ico">
+    
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'icomoon';
+        src: url("/fonts/icomoon.eot?q628ml");
+        src: url("/fonts/icomoon.eot?q628ml#iefix") format('embedded-opentype'),
+             url("/fonts/icomoon.ttf?q628ml") format('truetype'),
+             url("/fonts/icomoon.woff?q628ml") format('woff'),
+             url("/fonts/icomoon.svg?q628ml#icomoon") format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+    </style>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!--[if lt IE 9]><style type="text/css">.nav-inner {top:0;}.author-meta {position:static;top:0;}.search-form {height:36px;}</style><script type="text/javascript" src="https://unpkg.com/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+<meta name="generator" content="Hexo 5.2.0"></head>
+<body>
+
+    <main class="app">
+        <header id="header" class="header clearfix">
+    <div id="nav" class="nav">
+    <div class="nav-mobile">
+        <button id="open-panel" class="open-panel nav-mobile-item"><i class="icon-documents"></i></button>
+        <h1 class="nav-mobile-title nav-mobile-item">Herman-blog</h1>
+        <button id="open-menus" class="open-panel nav-mobile-item"><i class="icon-library"></i></button>
+    </div>
+
+    <nav id="nav-inner" class="nav-inner">
+        
+            <a class="nav-item" href="/">
+                <span class="nav-text">Home</span>
+            </a>
+        
+            <a class="nav-item" href="/categories/data">
+                <span class="nav-text">Data</span>
+            </a>
+        
+            <a class="nav-item" href="/categories/it">
+                <span class="nav-text">IT</span>
+            </a>
+        
+            <a class="nav-item" href="/tags">
+                <span class="nav-text">Tags</span>
+            </a>
+        
+            <a class="nav-item" href="/archives">
+                <span class="nav-text">Archives</span>
+            </a>
+        
+            <a class="nav-item" href="/about">
+                <span class="nav-text">About</span>
+            </a>
+        
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="https://hermanteng19.github.io"></form>
+
+        
+        
+        
+        
+
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Revise-or-create-MySQL-configuration-file-RHEL-or-Centos-7"><span class="toc-number">1.</span> <span class="toc-text">Revise or create MySQL configuration file (RHEL or Centos 7)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Modify-or-create-etc-my-cnf-file"><span class="toc-number">1.1.</span> <span class="toc-text">Modify or create &#x2F;etc&#x2F;my.cnf file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#add-a-configuration-item-bind-address-and-let-it-value-to-be-your-MySQL-server-host-ip-address-eg-192-168-1-114"><span class="toc-number">1.2.</span> <span class="toc-text">add a configuration item bind-address and let it value to be your MySQL server host ip address (eg. 192.168.1.114)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#save-and-exit"><span class="toc-number">1.3.</span> <span class="toc-text">save and exit</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Restart-MySQL-service"><span class="toc-number">2.</span> <span class="toc-text">Restart MySQL service</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Open-TCP-port-3306-using-iptables"><span class="toc-number">3.</span> <span class="toc-text">Open TCP port 3306 using iptables</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Setup-sbin-iptables-and-let-firewall-opens-port-on-3306-for-any-remote-machine"><span class="toc-number">3.1.</span> <span class="toc-text">Setup &#x2F;sbin&#x2F;iptables and let firewall opens port on 3306 for any remote machine</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#To-specific-client-host-machine-to-access-port-3306-you-can-explicitly-assign-ip-address-eg-192-168-1-134"><span class="toc-number">3.2.</span> <span class="toc-text">To specific client host machine to access port 3306, you can explicitly assign ip address (eg. 192.168.1.134)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Finally-save-IPv4-firewall-rules"><span class="toc-number">3.3.</span> <span class="toc-text">Finally save IPv4 firewall rules</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#If-it-doesn%E2%80%99t-work-for-testing-and-develop-environment-you-can-turn-off-firewall"><span class="toc-number">3.4.</span> <span class="toc-text">If it doesn’t work, for testing and develop environment, you can turn off firewall</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Grant-remote-access-to-new-MySQL-database"><span class="toc-number">4.</span> <span class="toc-text">Grant remote access to new MySQL database</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-database"><span class="toc-number">4.1.</span> <span class="toc-text">Create a new database</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Grant-remote-user-access-to-a-specific-database-on-user-host-machine-192-168-1-134"><span class="toc-number">4.2.</span> <span class="toc-text">Grant remote user access to a specific database on user host machine (192.168.1.134)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Grant-remote-access-to-existing-MySQL-database-for-user-herman-on-its-host-machine-eg-192-168-1-134"><span class="toc-number">5.</span> <span class="toc-text">Grant remote access to existing MySQL database for user (herman) on its host machine (eg. 192.168.1.134)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Require-a-set-of-two-commands"><span class="toc-number">5.1.</span> <span class="toc-text">Require a set of two commands</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Open-MySQL-client-tool-on-workstation-with-address-192-168-1-134-like-MySQL-workbench"><span class="toc-number">6.</span> <span class="toc-text">Open MySQL client tool on workstation with address 192.168.1.134 like MySQL workbench</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Create-new-connection-using-username-and-password"><span class="toc-number">7.</span> <span class="toc-text">Create new connection using username and password</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#username-herman"><span class="toc-number">7.1.</span> <span class="toc-text">username: herman</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#password-youOwnPasswd"><span class="toc-number">7.2.</span> <span class="toc-text">password: youOwnPasswd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#port-3306"><span class="toc-number">7.3.</span> <span class="toc-text">port: 3306</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Connection-is-created-and-foo-database-is-on-the-list-under-user-herman"><span class="toc-number">8.</span> <span class="toc-text">Connection is created and foo database is on the list under user herman</span></a></li></ol>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content">
+            <div id="wrapper" class="wrapper" style="max-width: 1200px">
+                <article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
+            Remote Connect MySQL Server from Client Machine Setup
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="https://hermanteng19.github.io/2020/11/25/Remote-Connect-MySQL-Server-from-Client-Machine-Setup/index.html">
+    
+    <i class="icon-calendar vm"></i>
+    
+    <time class="vm" datetime="2020-11-25T20:25:09.000Z" itemprop="datePublished">2020-11-25</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag vm"></i>
+    <a class="article-tag-link" href="/tags/Linux-MySQL-Config-Database/" rel="tag">Linux, MySQL, Config, Database</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <p>You can only connect to MySQL Server from localhost after MySQL installation by default, but in production, all MySQL clients remotely connect to server, for simulating real production environment in your home network, some configurations need to be made to be able to let you connect MySQL from client machine other than localhost.</p>
+<h2 id="Revise-or-create-MySQL-configuration-file-RHEL-or-Centos-7"><a href="#Revise-or-create-MySQL-configuration-file-RHEL-or-Centos-7" class="headerlink" title="Revise or create MySQL configuration file (RHEL or Centos 7)"></a>Revise or create MySQL configuration file (RHEL or Centos 7)</h2><h3 id="Modify-or-create-etc-my-cnf-file"><a href="#Modify-or-create-etc-my-cnf-file" class="headerlink" title="Modify or create /etc/my.cnf file"></a>Modify or create /etc/my.cnf file</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/my.cnf</span><br></pre></td></tr></table></figure>
+
+<h3 id="add-a-configuration-item-bind-address-and-let-it-value-to-be-your-MySQL-server-host-ip-address-eg-192-168-1-114"><a href="#add-a-configuration-item-bind-address-and-let-it-value-to-be-your-MySQL-server-host-ip-address-eg-192-168-1-114" class="headerlink" title="add a configuration item bind-address and let it value to be your MySQL server host ip address (eg. 192.168.1.114)"></a>add a configuration item <strong>bind-address</strong> and let it value to be your MySQL server host ip address (eg. 192.168.1.114)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bind-address=192.168.1.114</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqDHN"><img src="https://p.130014.xyz/2020/11/28/vim_etc_my_cnf.png" alt="vim_etc_my_cnf.png"></a></p>
+<h3 id="save-and-exit"><a href="#save-and-exit" class="headerlink" title="save and exit"></a>save and exit</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:wq</span><br></pre></td></tr></table></figure>
+
+<h2 id="Restart-MySQL-service"><a href="#Restart-MySQL-service" class="headerlink" title="Restart MySQL service"></a>Restart MySQL service</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart mysql.service</span><br></pre></td></tr></table></figure>
+
+<h2 id="Open-TCP-port-3306-using-iptables"><a href="#Open-TCP-port-3306-using-iptables" class="headerlink" title="Open TCP port 3306 using iptables"></a>Open TCP port 3306 using <strong><em>iptables</em></strong></h2><h3 id="Setup-sbin-iptables-and-let-firewall-opens-port-on-3306-for-any-remote-machine"><a href="#Setup-sbin-iptables-and-let-firewall-opens-port-on-3306-for-any-remote-machine" class="headerlink" title="Setup /sbin/iptables and let firewall opens port on 3306 for any remote machine"></a>Setup <code>/sbin/iptables</code> and let firewall opens port on 3306 for any remote machine</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sbin/iptables -A INPUT -i eth0 -p tcp --destination-port 3306 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<h3 id="To-specific-client-host-machine-to-access-port-3306-you-can-explicitly-assign-ip-address-eg-192-168-1-134"><a href="#To-specific-client-host-machine-to-access-port-3306-you-can-explicitly-assign-ip-address-eg-192-168-1-134" class="headerlink" title="To specific client host machine to access port 3306, you can explicitly assign ip address (eg. 192.168.1.134)"></a>To specific client host machine to access port 3306, you can explicitly assign ip address (eg. 192.168.1.134)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sbin/iptables -A INPUT -i eth0 -s 192.168.1.134/24 -p tcp --destination-port 3306 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<h3 id="Finally-save-IPv4-firewall-rules"><a href="#Finally-save-IPv4-firewall-rules" class="headerlink" title="Finally save IPv4 firewall rules"></a>Finally save IPv4 firewall rules</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sbin/iptables-save &gt; /etc/sysconfig/iptables</span><br></pre></td></tr></table></figure>
+
+<h3 id="If-it-doesn’t-work-for-testing-and-develop-environment-you-can-turn-off-firewall"><a href="#If-it-doesn’t-work-for-testing-and-develop-environment-you-can-turn-off-firewall" class="headerlink" title="If it doesn’t work, for testing and develop environment, you can turn off firewall"></a>If it doesn’t work, for testing and develop environment, you can turn off firewall</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld.service</span><br></pre></td></tr></table></figure>
+
+<h2 id="Grant-remote-access-to-new-MySQL-database"><a href="#Grant-remote-access-to-new-MySQL-database" class="headerlink" title="Grant remote access to new MySQL database"></a>Grant remote access to new MySQL database</h2><h3 id="Create-a-new-database"><a href="#Create-a-new-database" class="headerlink" title="Create a new database"></a>Create a new database</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create database foo;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Grant-remote-user-access-to-a-specific-database-on-user-host-machine-192-168-1-134"><a href="#Grant-remote-user-access-to-a-specific-database-on-user-host-machine-192-168-1-134" class="headerlink" title="Grant remote user access to a specific database on user host machine (192.168.1.134)"></a>Grant remote user access to a specific database on user host machine (192.168.1.134)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on foo.* to herman@&#39;192.168.1.134&#39; identified by &#39;youOwnPasswd&#39;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Grant-remote-access-to-existing-MySQL-database-for-user-herman-on-its-host-machine-eg-192-168-1-134"><a href="#Grant-remote-access-to-existing-MySQL-database-for-user-herman-on-its-host-machine-eg-192-168-1-134" class="headerlink" title="Grant remote access to existing MySQL database for user (herman) on its host machine (eg. 192.168.1.134)"></a>Grant remote access to existing MySQL database for user (herman) on its host machine (eg. 192.168.1.134)</h2><h3 id="Require-a-set-of-two-commands"><a href="#Require-a-set-of-two-commands" class="headerlink" title="Require a set of two commands"></a>Require a set of two commands</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">update db set Host&#x3D;&#39;192.168.1.134&#39; where Db&#x3D;&#39;mysql&#39;;</span><br><span class="line">update user set Host&#x3D;&#39;192.168.1.134&#39; where user&#x3D;&#39;herman&#39;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Open-MySQL-client-tool-on-workstation-with-address-192-168-1-134-like-MySQL-workbench"><a href="#Open-MySQL-client-tool-on-workstation-with-address-192-168-1-134-like-MySQL-workbench" class="headerlink" title="Open MySQL client tool on workstation with address 192.168.1.134 like MySQL workbench"></a>Open MySQL client tool on workstation with address <code>192.168.1.134</code> like MySQL workbench</h2><h2 id="Create-new-connection-using-username-and-password"><a href="#Create-new-connection-using-username-and-password" class="headerlink" title="Create new connection using username and password"></a>Create new connection using username and password</h2><h3 id="username-herman"><a href="#username-herman" class="headerlink" title="username: herman"></a>username: herman</h3><h3 id="password-youOwnPasswd"><a href="#password-youOwnPasswd" class="headerlink" title="password: youOwnPasswd"></a>password: youOwnPasswd</h3><h3 id="port-3306"><a href="#port-3306" class="headerlink" title="port: 3306"></a>port: 3306</h3><p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QQ5gcb"><img src="https://p.130014.xyz/2020/11/29/mysql_conn_2_remoteSrv.png" alt="mysql_conn_2_remoteSrv.png"></a></p>
+<h2 id="Connection-is-created-and-foo-database-is-on-the-list-under-user-herman"><a href="#Connection-is-created-and-foo-database-is-on-the-list-under-user-herman" class="headerlink" title="Connection is created and foo database is on the list under user herman"></a>Connection is created and foo database is on the list under user <code>herman</code></h2><p><a target="_blank" rel="noopener" href="https://www.wailian.work/image/QDqbF0"><img src="https://p.130014.xyz/2020/11/28/mysql_conn_established.png" alt="mysql_conn_established.png"></a></p>
+
+        
+    </section>
+</article>
+
+
+
+<a id="pagenext" href="/2020/11/25/Linux-network-auto-boot-and-restart/" class="article-next" title="Linux network auto boot and restart"><i class="icon-arrow-right"></i></a>
+
+
+<a id="pageprev" href="/2020/11/27/How-to-let-local-images-display-on-your-hexo-blog-website/" class="article-prev" title="How to let local images display on your hexo blog website"><i class="icon-arrow-left"></i></a>
+
+
+
+<div class="comments">
+    <div id="comments"></div>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+    new Gitalk({
+        clientID: "2197645fbbf6774a6cbe",
+        clientSecret: "a880ffb6977f50f034798850af3853412f912480",
+        repo: "hermanteng19.github.io",
+        owner: "hermanteng19",
+        admin: ["hermanteng19"],
+        id: "387032f1ab2e07fea1fd1963aff4f776",
+        distractionFreeMode: true,
+        title: "Remote Connect MySQL Server from Client Machine Setup",
+        body: "https://hermanteng19.github.io/2020/11/25/Remote-Connect-MySQL-Server-from-Client-Machine-Setup/",
+        labels: ["Linux, MySQL, Config, Database"]
+    }).render('comments');
+    </script>
+</div>
+
+
+
+            </div>
+        </div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+
+    
+</footer>
+
+    </main>
+
+    <script type="text/javascript" src="https://unpkg.com/jquery@1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        var nodes = {
+            nav: $('#nav'),
+            aside: $('#aside'),
+            asideInner: $('#aside-inner'),
+            navInner: $('#nav-inner')
+        };
+
+        var doing = false;
+        nodes.asideInner.on('webkitAnimationEnd mozAnimationEnd oAnimationEnd oanimationend animationend', function() {
+            if (nodes.aside.hasClass('mobile-open')) {
+                nodes.aside.removeClass('mobile-open');
+            } else {
+                nodes.aside.removeClass('mobile-close panel-show');
+            }
+            doing = false;
+        });
+        $('#open-panel, #aside-mask').on('click', function() {
+            if (doing) {
+                return;
+            }
+
+            if (nodes.aside.hasClass('panel-show')) {
+                nodes.aside.addClass('mobile-close');
+            } else {
+                nodes.aside.addClass('mobile-open panel-show');
+            }
+        });
+        $('#open-menus').on('click', function() {
+            nodes.navInner.slideToggle('normal', slideDone);
+        });
+
+        if (window.innerWidth <= 960) {
+            setTimeout(function() {
+                nodes.navInner.slideUp('normal', slideDone);
+            }, 3000);
+        }
+
+        function slideDone() {
+            if (nodes.navInner.css('display') !== 'none') {
+                nodes.navInner.css('display', '');
+            }
+        }
+
+        $(window).on('resize', function() {
+            if ($(this).width() > 960) {
+                nodes.navInner.css('display', '');
+            }
+        });
+    });
+    </script>
+    
+        
+<script src="/js/scrollspy.min.js"></script>
+
+        <script type="text/javascript">
+        $(document.body).scrollspy({target: '#aside-inner'});
+
+        $(window).on('resize', function() {
+            var hw = $('#header').width();
+            var ww = $('#wrapper').width();
+            var space = ($(this).width() - hw - ww) / 2 / 2;
+
+            var pageprev = $('#pageprev');
+            var pagenext = $('#pagenext');
+            var avg = (pageprev.width() + pagenext.width()) / 2
+
+            if(space > avg) {
+                var len = space - avg / 2;
+                var styles = {position: 'fixed', top: '50%', marginTop: - (pageprev.width() + pagenext.width()) / 4}
+                pageprev.css($.extend({left: hw + len}, styles));
+                pagenext.css($.extend({right: len}, styles));
+            } else {
+                pageprev.removeAttr('style');
+                pagenext.removeAttr('style');
+            }
+        }).trigger('resize');
+        </script>
+    
+
+</body>
+</html>
