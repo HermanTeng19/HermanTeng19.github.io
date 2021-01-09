@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Increase Disk Space for Linux Virtual Machine Created by VMware - Herman-blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Icaurs - Hexo Theme"><meta name="msapplication-TileImage" content="/img/favicon1.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Icaurs - Hexo Theme"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="Virtual machine is a major way to setup Linus development environment in Windows PC. One of the great things about newly Linux distro such as RHEL, Ubuntu, Centos etc is that most of them adopt to a L"><meta property="og:type" content="blog"><meta property="og:title" content="Increase Disk Space for Linux Virtual Machine Created by VMware"><meta property="og:url" content="https://hermanteng19.github.io/2021/01/08/Increase-Disk-Space-for-Linux-Virtual-Machine-Created-by-VMware/"><meta property="og:site_name" content="Herman-blog"><meta property="og:description" content="Virtual machine is a major way to setup Linus development environment in Windows PC. One of the great things about newly Linux distro such as RHEL, Ubuntu, Centos etc is that most of them adopt to a L"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://hermanteng19.github.io/img/linuxlvmribbon.jpg"><meta property="article:published_time" content="2021-01-08T22:31:16.000Z"><meta property="article:modified_time" content="2021-01-09T13:39:34.372Z"><meta property="article:author" content="Herman Teng"><meta property="article:tag" content="Linux, LVM, VMware, Disk management"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/linuxlvmribbon.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://hermanteng19.github.io/2021/01/08/Increase-Disk-Space-for-Linux-Virtual-Machine-Created-by-VMware/"},"headline":"Herman-blog","image":["https://hermanteng19.github.io/img/linuxlvmribbon.jpg"],"datePublished":"2021-01-08T22:31:16.000Z","dateModified":"2021-01-09T13:39:34.372Z","author":{"@type":"Person","name":"Herman Teng"},"description":"Virtual machine is a major way to setup Linus development environment in Windows PC. One of the great things about newly Linux distro such as RHEL, Ubuntu, Centos etc is that most of them adopt to a L"}</script><link rel="canonical" href="https://hermanteng19.github.io/2021/01/08/Increase-Disk-Space-for-Linux-Virtual-Machine-Created-by-VMware/"><link rel="icon" href="/img/favicon1.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/avatar1.png" alt="Herman-blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/img/linuxlvmribbon.jpg" alt="Increase Disk Space for Linux Virtual Machine Created by VMware"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-01-08T22:31:16.000Z" title="2021-01-08T22:31:16.000Z">2021-01-08</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-01-09T13:39:34.372Z" title="2021-01-09T13:39:34.372Z">2021-01-09</time></span><span class="level-item"><a class="link-muted" href="/categories/IT-BI/">IT, BI</a></span><span class="level-item">7 minutes read (About 1039 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">Increase Disk Space for Linux Virtual Machine Created by VMware</h1><div class="content"><p>Virtual machine is a major way to setup <code>Linus</code> development environment in <code>Windows PC</code>. One of the great things about newly Linux distro such as <code>RHEL, Ubuntu, Centos</code> etc is that most of them adopt to a LVM (Logical Volume Manager) filesystem which is a natural fit for Linux virtualized system like <code>VMware</code> or <code>VitualBox</code>.</p>
+<p>The main characteristic for LVM is that it is able to adjust filesystem volume dynamically by integrating multiple partitions which feel like one partition on one disk after LVM adjustment, moreover, adding and remove partitions to increase and shrink disk space also become very easy than before and this feature applies virtualized hard drive and makes it very easy to grow the disk space within few steps setup. You might ask what is the point to do that, I would say if you make virtual machine as your main development environment, the disk space is going to run out quickly as time goes by when more and more tools and libraries are installed. I have my VM hard disk initial 20GB by default setting but after I setup all my environment items my root directory only has 300MB space left. </p>
+<p>I will grow disk space with my Linux virtual machine to 40GB:</p>
+<p>Before we make our hands dirty, it’s necessary to get some basic understanding about the LVM in terms of 3 key things, they are PV (physical volumes), VG (volume groups) and LV (logical volumes). LVM integrates multiple partitions or disks into a big independent partition (VG), then formats it to create multiple logical volumes (LV) to be able to mount filesystem.</p>
+<a id="more"></a>
+
+<h2 id="Assign-more-space-or-partition-on-virtual-machine-setting"><a href="#Assign-more-space-or-partition-on-virtual-machine-setting" class="headerlink" title="Assign more space or partition on virtual machine setting"></a>Assign more space or partition on virtual machine setting</h2><p>The first step is that assign space you want on virtual machine console, bear in mind, the host must be shutdown before doing anything change. In this case, we will use WMware as example, the VIrtualBox is similar.</p>
+<p><img src="https://p.130014.xyz/2021/01/09/wmwaresetting.png" alt="wmwaresetting.png"></p>
+<p><img src="https://p.130014.xyz/2021/01/09/wmwaresetting2.png" alt="wmwaresetting2.png"></p>
+<p>The fast and alternative way is use command line:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmware<span class="literal">-vdiskmanager</span>.exe <span class="literal">-x</span> <span class="number">40</span>GB <span class="string">&quot;your virtual disk name.vmdk&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>Things may be tricky here if you were new to virtual machine as above highlight “<strong>Expand increases only the size of a virtual disk. Sizes of partitions and file systems are not affected</strong>“, it looks like no that easy to expand the disk space only by <code>VMWare</code> setup, because now it only adds more unpartitioned space to the virtual hard disk.</p>
+<p>Convert the unpartitioned space into usable filesystem so it can be included within the LVM filesystem.</p>
+<h2 id="LVM-configuration-to-extend-new-partition-to-mount-filesystem"><a href="#LVM-configuration-to-extend-new-partition-to-mount-filesystem" class="headerlink" title="LVM configuration to extend new partition to mount filesystem"></a>LVM configuration to extend new partition to mount filesystem</h2><p>Boot Linux VM and switch to <code>root</code> account. </p>
+<p>We first check out our disk partition status in advanced so that we can see clearly the change before and after, there are many commands in Linux e.g <code>df -h</code>, <code>mount</code>, here we use <code>lsblk</code> which is abbreviation of list block device</p>
+<p><img src="https://p.130014.xyz/2021/01/09/df_h_cmd_bf.png" alt="df_h_cmd_bf.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk -ip /dev/sda</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p.130014.xyz/2021/01/09/lsblkcmd.png" alt="lsblkcmd.png"></p>
+<p>from return data, we know our total disk space is 40G, new unpartitioned disk <code>/dev/sda3</code> with 20G is new added space, now let’s see how to create a new partition that takes up 20G space.</p>
+<h3 id="Create-a-new-partition-for-unallocated-space"><a href="#Create-a-new-partition-for-unallocated-space" class="headerlink" title="Create a new partition for unallocated space"></a>Create a new partition for unallocated space</h3><p>There are 2 disk partition tools we can utilize to create a new partition in according to your partition table format, <code>fdisk</code> is for <code>MBR</code> and <code>gdisk</code> is for <code>GPT</code>. We can use <code>gdisk</code> to check our partition format</p>
+<p><img src="https://p.130014.xyz/2021/01/09/gdiskcmd.png" alt="gdiskcmd.png"></p>
+<p>we can see MBR is the partition table for current system so that we will use <code>fdisk</code> to create partition. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sda</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">n (new)</span><br><span class="line">p (primary)</span><br><span class="line">3 (partition number, since 1st and 2nd partition already exists)</span><br><span class="line">select default first available cylinder to the default last cylinder.</span><br><span class="line">t (<span class="built_in">type</span>)</span><br><span class="line">3 (partition number)</span><br><span class="line">8e (<span class="built_in">set</span> <span class="built_in">type</span> to LVM)</span><br><span class="line">p (view the new partitions layout)</span><br><span class="line">w (write out the new partitions layout to disk)</span><br></pre></td></tr></table></figure>
+
+<p>Reboot the system so the new partition is recognized by the system; if you don’t want to reboot, there is a command to update partition table like <code>source</code> that is <code>partprobe</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">partprobe -s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p.130014.xyz/2021/01/09/partprobecmd.png" alt="partprobecmd.png"></p>
+<p>We first check our disk ID to make sure “<strong>8e</strong>“ is presented as Linux file system type ID and under <strong>Linux LVM system</strong></p>
+<p><img src="https://p.130014.xyz/2021/01/09/fdiskcmd.png" alt="fdiskcmd.png"></p>
+<h3 id="LVM-operation-to-mount-new-partition-to-file-system"><a href="#LVM-operation-to-mount-new-partition-to-file-system" class="headerlink" title="LVM operation to mount new partition to file system"></a>LVM operation to mount new partition to file system</h3><p>The next step is to use LVM to take the newly formed partition and turn it into a new Physical Volume, add it to a Volume Group, and finally assimilate its free space into a Logical Volume.</p>
+<p>Convert /dev/sda3 partition into a Physical Volume so LVM can make use of it:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvcreate /dev/sda3</span><br></pre></td></tr></table></figure>
+
+<p>Add the new Physical Volume to the Volume Group as additional free space:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgextend centos /dev/sda3</span><br></pre></td></tr></table></figure>
+
+<p>Note the free space now in the <code>Volume Group</code> which can now be assigned to a <code>Logical Volume</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgdisplay</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p.130014.xyz/2021/01/09/vgdisplaycmd.png" alt="vgdisplaycmd.png"></p>
+<p>Have the Logical Volume (within the Volume Group) overtake the remaining free space of the Volume Group:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lvextend -l +100%FREE /dev/centos/root</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgdisplay</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p.130014.xyz/2021/01/09/vgdisplaycmd2.png" alt="vgdisplaycmd2.png"></p>
+<p>You can see all free space is now allocated.</p>
+<p>The last step, we use <code>xfs_growfs</code> command to make logical volume live and mount filesystem so the new disk space can be used right away:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xfs_growfs /dev/centos/root</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p.130014.xyz/2021/01/09/df_h_cmd_aft.png" alt="df_h_cmd_aft.png"></p>
+<p>from above, you might feel the useful of LVM but extend is only one feature of it, we summarize all features of LVM by below table for reference:</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>PV</th>
+<th>VG</th>
+<th>LV</th>
+<th>Filesystem (XFS/EXT4)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scan</td>
+<td>pvscan</td>
+<td>vgscan</td>
+<td>lvscan</td>
+<td>lsblk, blkid</td>
+</tr>
+<tr>
+<td>Create</td>
+<td>pvcreate</td>
+<td>vgcreate</td>
+<td>lvcreate</td>
+<td>mkfs.xfs/mkfs.ext4</td>
+</tr>
+<tr>
+<td>Display</td>
+<td>pvdisplay</td>
+<td>vgdisplay</td>
+<td>lvdisplay</td>
+<td>df, mount</td>
+</tr>
+<tr>
+<td>Extend</td>
+<td>N/A</td>
+<td>vgextend</td>
+<td>lvextend (lvresize)</td>
+<td>xfs_growfs/resize2fs</td>
+</tr>
+<tr>
+<td>Reduce</td>
+<td>N/A</td>
+<td>vgreduce</td>
+<td>lvreduce (lvresize)</td>
+<td>N/A/resize2fs</td>
+</tr>
+<tr>
+<td>Remove</td>
+<td>pvremove</td>
+<td>vgremove</td>
+<td>lvremove</td>
+<td>umount</td>
+</tr>
+<tr>
+<td>Resize</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>lvresize</td>
+<td>xfs_growfs/resize2fs</td>
+</tr>
+<tr>
+<td>Attribute</td>
+<td>pvchange</td>
+<td>vgchange</td>
+<td>lvchange</td>
+<td>/etc/fstab, remount</td>
+</tr>
+</tbody></table>
+</div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Linux-LVM-VMware-Disk-management/">Linux, LVM, VMware, Disk management</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/01/01/SQL-Server-Table-Partitioning-in-Large-Scale-Data-Warehouse-3/"><span class="level-item">SQL Server Table Partitioning in Large Scale Data Warehouse 3</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'https://hermanteng19.github.io/2021/01/08/Increase-Disk-Space-for-Linux-Virtual-Machine-Created-by-VMware/';
+            this.page.identifier = '2021/01/08/Increase-Disk-Space-for-Linux-Virtual-Machine-Created-by-VMware/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'herman-hexo-blog' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/avatar1.png" alt="Herman"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Herman</p><p class="is-size-6 is-block">Data Analyst&amp;Developer</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Toronto, Canada</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">17</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">6</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">15</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/HermanTeng19" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/HermanTeng19"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#Assign-more-space-or-partition-on-virtual-machine-setting"><span class="level-left"><span class="level-item">1</span><span class="level-item">Assign more space or partition on virtual machine setting</span></span></a></li><li><a class="level is-mobile" href="#LVM-configuration-to-extend-new-partition-to-mount-filesystem"><span class="level-left"><span class="level-item">2</span><span class="level-item">LVM configuration to extend new partition to mount filesystem</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Create-a-new-partition-for-unallocated-space"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">Create a new partition for unallocated space</span></span></a></li><li><a class="level is-mobile" href="#LVM-operation-to-mount-new-partition-to-file-system"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">LVM operation to mount new partition to file system</span></span></a></li></ul></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/avatar1.png" alt="Herman-blog" height="28"></a><p class="is-size-7"><span>&copy; 2021 Herman Teng</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
