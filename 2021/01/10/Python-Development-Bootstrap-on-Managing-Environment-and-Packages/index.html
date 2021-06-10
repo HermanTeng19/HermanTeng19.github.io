@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Python Development Bootstrap on Managing Environment and Packages - Herman-blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Icaurs - Hexo Theme"><meta name="msapplication-TileImage" content="/img/favicon1.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Icaurs - Hexo Theme"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="If you have basic python experience and knowledge and willing to develop a real python application or product, I think that post is right for you. Let’s recap how do we start to use Python, we either"><meta property="og:type" content="blog"><meta property="og:title" content="Python Development Bootstrap on Managing Environment and Packages"><meta property="og:url" content="https://hermanteng19.github.io/2021/01/10/Python-Development-Bootstrap-on-Managing-Environment-and-Packages/"><meta property="og:site_name" content="Herman-blog"><meta property="og:description" content="If you have basic python experience and knowledge and willing to develop a real python application or product, I think that post is right for you. Let’s recap how do we start to use Python, we either"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://hermanteng19.github.io/img/pyvirtualenvribbon1.jpg"><meta property="article:published_time" content="2021-01-10T13:20:54.000Z"><meta property="article:modified_time" content="2021-01-12T03:28:10.049Z"><meta property="article:author" content="Herman Teng"><meta property="article:tag" content="Python, virtual environment"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/pyvirtualenvribbon1.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://hermanteng19.github.io/2021/01/10/Python-Development-Bootstrap-on-Managing-Environment-and-Packages/"},"headline":"Herman-blog","image":["https://hermanteng19.github.io/img/pyvirtualenvribbon1.jpg"],"datePublished":"2021-01-10T13:20:54.000Z","dateModified":"2021-01-12T03:28:10.049Z","author":{"@type":"Person","name":"Herman Teng"},"description":"If you have basic python experience and knowledge and willing to develop a real python application or product, I think that post is right for you. Let’s recap how do we start to use Python, we either"}</script><link rel="canonical" href="https://hermanteng19.github.io/2021/01/10/Python-Development-Bootstrap-on-Managing-Environment-and-Packages/"><link rel="icon" href="/img/favicon1.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/avatar1.png" alt="Herman-blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/img/pyvirtualenvribbon1.jpg" alt="Python Development Bootstrap on Managing Environment and Packages"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-01-10T13:20:54.000Z" title="2021-01-10T13:20:54.000Z">2021-01-10</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-01-12T03:28:10.049Z" title="2021-01-12T03:28:10.049Z">2021-01-11</time></span><span class="level-item"><a class="link-muted" href="/categories/IT-BI/">IT, BI</a></span><span class="level-item">29 minutes read (About 4311 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">Python Development Bootstrap on Managing Environment and Packages</h1><div class="content"><p>If you have basic python experience and knowledge and willing to develop a real python application or product, I think that post is right for you. Let’s recap how do we start to use <code>Python</code>, we either go to official site to download python, install it on system wise then jump start to write “Hello, world!” or install <code>Anaconda</code> to get a long list of pre-installed libraries and then do the same thing. I would say that is totally ok by using python globally or system wise at the beginning stage, but as we accumulate enough python scripts and  do the real python project, we may found something really painful during our development</p>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Python Development Bootstrap on Managing Environment and Packages - Herman-blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Icaurs - Hexo Theme"><meta name="msapplication-TileImage" content="/img/favicon1.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Icaurs - Hexo Theme"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="If you have basic python experience and knowledge and willing to develop a real python application or product, I think that post is right for you. Let’s recap how do we start to use Python, we either"><meta property="og:type" content="blog"><meta property="og:title" content="Python Development Bootstrap on Managing Environment and Packages"><meta property="og:url" content="https://hermanteng19.github.io/2021/01/10/Python-Development-Bootstrap-on-Managing-Environment-and-Packages/"><meta property="og:site_name" content="Herman-blog"><meta property="og:description" content="If you have basic python experience and knowledge and willing to develop a real python application or product, I think that post is right for you. Let’s recap how do we start to use Python, we either"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://hermanteng19.github.io/img/pyvirtualenvribbon1.jpg"><meta property="article:published_time" content="2021-01-10T13:20:54.000Z"><meta property="article:modified_time" content="2021-06-10T03:27:34.284Z"><meta property="article:author" content="Herman Teng"><meta property="article:tag" content="Python, virtual environment"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/pyvirtualenvribbon1.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://hermanteng19.github.io/2021/01/10/Python-Development-Bootstrap-on-Managing-Environment-and-Packages/"},"headline":"Herman-blog","image":["https://hermanteng19.github.io/img/pyvirtualenvribbon1.jpg"],"datePublished":"2021-01-10T13:20:54.000Z","dateModified":"2021-06-10T03:27:34.284Z","author":{"@type":"Person","name":"Herman Teng"},"description":"If you have basic python experience and knowledge and willing to develop a real python application or product, I think that post is right for you. Let’s recap how do we start to use Python, we either"}</script><link rel="canonical" href="https://hermanteng19.github.io/2021/01/10/Python-Development-Bootstrap-on-Managing-Environment-and-Packages/"><link rel="icon" href="/img/favicon1.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/avatar1.png" alt="Herman-blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/img/pyvirtualenvribbon1.jpg" alt="Python Development Bootstrap on Managing Environment and Packages"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-01-10T13:20:54.000Z" title="2021-01-10T13:20:54.000Z">2021-01-10</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-06-10T03:27:34.284Z" title="2021-06-10T03:27:34.284Z">2021-06-09</time></span><span class="level-item"><a class="link-muted" href="/categories/IT-BI/">IT, BI</a></span><span class="level-item">29 minutes read (About 4276 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">Python Development Bootstrap on Managing Environment and Packages</h1><div class="content"><p>If you have basic python experience and knowledge and willing to develop a real python application or product, I think that post is right for you. Let’s recap how do we start to use <code>Python</code>, we either go to official site to download python, install it on system wise then jump start to write “Hello, world!” or install <code>Anaconda</code> to get a long list of pre-installed libraries and then do the same thing. I would say that is totally ok by using python globally or system wise at the beginning stage, but as we accumulate enough python scripts and  do the real python project, we may found something really painful during our development</p>
 <ul>
 <li>Version confusion: different python versions reside together as well as pip versions</li>
 <li>Package redundancy: too many libraries in one place, some of them you use only for some practice and never use them again</li>
@@ -33,29 +33,29 @@
 <h3 id="Launch-and-exist-virtual-environment"><a href="#Launch-and-exist-virtual-environment" class="headerlink" title="Launch and exist virtual environment"></a>Launch and exist virtual environment</h3><p>For launch virtual environment, use <code>source &lt;directory&gt;/activate</code> command to start:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /home/user1/tmp/vetest1/bin/activate</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://p.130014.xyz/2021/01/11/virtualenvironmentlaunch.png" alt="virtualenvironmentlaunch.png"></p>
+<p><img src="/img/screenshots/virtualenvironmentlaunch.png" alt="virtualenvironmentlaunch.png"></p>
 <p>you can see your prompt head title start with <code>(vestest1)</code> which means your virtual environment is now started. Now let’s check the python version in this environment by issue command <code>python --version</code></p>
-<p><img src="https://p.130014.xyz/2021/01/11/pythonversion.png" alt="pythonversion.png"></p>
+<p><img src="/img/screenshots/pythonversion.png" alt="pythonversion.png"></p>
 <p>alternatively, enter the directory and check python binary file</p>
-<p><img src="https://p.130014.xyz/2021/01/11/pythondir.png" alt="pythondir.png"></p>
+<p><img src="/img/screenshots/pythondir.png" alt="pythondir.png"></p>
 <p>next, let’s pip download some package e.g. <code>matplotlib</code> to check if would be resided in virtual environment folder</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install matplotlib</span><br><span class="line">ls -l /home/user1/tmp/vetest1/lib64/python3.8/site-packages/</span><br></pre></td></tr></table></figure>
 
 <p>*<em>you can directly use python or pip after you are in virtual environment</em></p>
-<p><img src="https://p.130014.xyz/2021/01/11/pypkgdir.png" alt="pypkgdir.png"></p>
+<p><img src="/img/screenshots/pypkgdir.png" alt="pypkgdir.png"></p>
 <p>you can see the visualization library <code>matplotlib</code> is installed in virtual environment directory other than python system package folder.</p>
 <p> Exist virtual environment by issue command <code>deactivate</code>, you will see the command line title never start with virtual environment name but restore normal display.</p>
-<p><img src="https://p.130014.xyz/2021/01/11/deactivate.png" alt="deactivate.png"></p>
+<p><img src="/img/screenshots/deactivate.png" alt="deactivate.png"></p>
 <h3 id="Let-your-IDE-recognizes-your-new-virtual-environment-–-PyCharm-and-VS-Code"><a href="#Let-your-IDE-recognizes-your-new-virtual-environment-–-PyCharm-and-VS-Code" class="headerlink" title="Let your IDE recognizes your new virtual environment – PyCharm and VS Code"></a>Let your IDE recognizes your new virtual environment – PyCharm and VS Code</h3><p>We can’t only rely on interactive console to do development so that let our favorite IDE recognize virtual environment is quite important. Undoubtedly, <code>PyCharm</code> is the best python IDE, <code>VS Code</code> is becoming a popular IDE for all language by ton of plugins. Now let’s see how do we configure <code>PyCharm</code> and <code>VS Code</code>.</p>
 <p>For <code>PyCharm</code>, launch it by creating new project, on prompt window assign a project directory such as <code>/home/user1/pydev1</code>, then choose <strong><em>Previously configured interpreter</em></strong> radio button, then choose our new created virtual environment <strong><em>bin</em></strong> folder <strong><em>python</em></strong> file as interpreter.</p>
-<p><img src="https://p.130014.xyz/2021/01/11/pycharmconfig.png" alt="pycharmconfig.png"></p>
-<p><img src="https://p.130014.xyz/2021/01/11/pycharmproject.png" alt="pycharmproject.png"></p>
-<p><img src="https://p.130014.xyz/2021/01/11/pycharminterpreter.png" alt="pycharminterpreter.png"></p>
+<p><img src="/img/screenshots/pycharmconfig.png" alt="pycharmconfig.png"></p>
+<p><img src="/img/screenshots/pycharmproject.png" alt="pycharmproject.png"></p>
+<p><img src="/img/screenshots/pycharminterpreter.png" alt="pycharminterpreter.png"></p>
 <p>now you can see the python interpreter is pointing to our virtual environment with python 3.8.</p>
 <p>For <code>VS Code</code>, launch it then click left part of status bar, from prompt window to find our new created virtual environment <strong><em>bin</em></strong> folder <strong><em>python</em></strong> file as interpreter</p>
-<img src="https://p.130014.xyz/2021/01/11/vscodeconfig.png" alt="vscodeconfig.png" style="zoom: 67%;" />
+<img src="/img/screenshots/vscodeconfig.png" alt="vscodeconfig.png" style="zoom: 67%;" />
 
-<p><img src="https://p.130014.xyz/2021/01/11/vscodeinterpreter.png" alt="vscodeinterpreter.png"></p>
+<p><img src="/img/screenshots/vscodeinterpreter.png" alt="vscodeinterpreter.png"></p>
 <p>you can see now python interpreter is our virtual environment <code>vetest1</code>.</p>
 <h3 id="Create-python2-virtual-environment"><a href="#Create-python2-virtual-environment" class="headerlink" title="Create python2 virtual environment"></a>Create python2 virtual environment</h3><p>For senior python user, you might still need python2 environment, very similar with python3 but change command from <code>python3 venv -m vetest2</code> to <code>python -m even vetest2</code> </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m virtualenv vetest2</span><br></pre></td></tr></table></figure>
@@ -128,22 +128,22 @@
 <h3 id="Create-pipenv-virtual-environment-for-project"><a href="#Create-pipenv-virtual-environment-for-project" class="headerlink" title="Create pipenv virtual environment for project"></a>Create <code>pipenv</code> virtual environment for project</h3><p>There are 2 ways to do that, first one is use <code>pipenv shell</code> command to launch environment shell; the other way is install a package by use <code>pipenv</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pipenv --python 3.8 || pipenv shell</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://p.130014.xyz/2021/01/11/pipenv.png" alt="pipenv.png"></p>
+<p><img src="/img/screenshots/pipenv.png" alt="pipenv.png"></p>
 <p>From above return message, we know our virtual environment has been created with location: <code>/home/user/.local/share/virtualenvs/pydev2-ro0T2QJC</code>(suffix is system generated randomly), you might be confused there why <code>pipenv</code> create a separated folder rather than using user created project folder? I would say that a good feature of <code>pipenv</code> over <code>venv</code>, Pipenv separates your development environment and python environment, which makes you more focus on your project stuff other than those python supporting files, actually these two folders are associated with each other, every time you install a new package, package file will be on virtual environment folder but the relevant configuration value will be written into <code>Pipfile</code> which is a replacement for <code>requirement.txt</code> file in old age.</p>
 <h3 id="Launch-pipenv-virtual-environment-and-install-a-new-package"><a href="#Launch-pipenv-virtual-environment-and-install-a-new-package" class="headerlink" title="Launch pipenv virtual environment and install a new package"></a>Launch <code>pipenv</code> virtual environment and install a new package</h3><p>We use <code>pipenv shell</code> command to start to use new virtual environment:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/user/pydev2</span><br><span class="line">pipenv shell</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://p.130014.xyz/2021/01/11/launchpipenv.png" alt="launchpipenv.png"></p>
+<p><img src="/img/screenshots/launchpipenv.png" alt="launchpipenv.png"></p>
 <p>our new virtual environment is launched successfully! We can now check our project and environment information</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pipenv --<span class="built_in">where</span></span><br><span class="line">pipenv --venv</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://p.130014.xyz/2021/01/11/pipenvinfod0709dcf589374bc.png" alt="pipenvinfod0709dcf589374bc.png"></p>
+<p><img src="/img/screenshots/pipenvinfo.png" alt="pipenvinfo.png"></p>
 <p>Now, let’s install another data visualization package <code>seaborn</code> in <code>pydev2</code>.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pipenv install seaborn</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://p.130014.xyz/2021/01/11/pipenvinstall.png" alt="pipenvinstall.png"></p>
+<p><img src="/img/screenshots/pipenvinstall.png" alt="pipenvinstall.png"></p>
 <p>like previous chapter mentioned, when package has multiple dependencies and sub-dependencies, Pipenv will generate <code>Pipfile.lock</code> automatically which is a <code>JSON</code> file, if you familiar with JavaScript or NodeJS, you might find it is very similar with <code>packages.json</code> file after you install a module by using <code>npm install express --save</code> </p>
-<p><img src="https://p.130014.xyz/2021/01/11/pipenvseaborn.png" alt="pipenvseaborn.png"></p>
+<p><img src="/img/screenshots/pipenvseaborn.png" alt="pipenvseaborn.png"></p>
 <p>you can see <code>seaborn</code> and its dependent packages are all installed into virtual environment folder.</p>
 <p>To exist Pipenv, use <code>deactivate</code> command in shell.</p>
 <h3 id="IDE-preparation-for-virtual-environment-–-PyCharm-and-VS-Code"><a href="#IDE-preparation-for-virtual-environment-–-PyCharm-and-VS-Code" class="headerlink" title="IDE preparation for virtual environment – PyCharm and VS Code"></a>IDE preparation for virtual environment – PyCharm and VS Code</h3><p>PyCharm provides three virtual environment options</p>
@@ -153,14 +153,14 @@
 <li>conda</li>
 </ol>
 <p>similar with previous chapter mentioned on <code>venv</code>, launch PyCharm, open our project folder <code>pydev2</code>, PyCharm is smart enough to be able to recognize <code>pipenv</code> environment project, all we need to do is just click ok on prompt window, then every thing done.</p>
-<p><img src="https://p.130014.xyz/2021/01/11/pycharmpipenv.png" alt="pycharmpipenv.png"></p>
-<p><img src="https://p.130014.xyz/2021/01/11/pycharmpydev2.png" alt="pycharmpydev2.png"></p>
-<p><img src="https://p.130014.xyz/2021/01/11/pycharminterpreter2.png" alt="pycharminterpreter2.png"></p>
+<p><img src="/img/screenshots/pycharmpipenv.png" alt="pycharmpipenv.png"></p>
+<p><img src="/img/screenshots/pycharmpydev2.png" alt="pycharmpydev2.png"></p>
+<p><img src="/img/screenshots/pycharminterpreter2.png" alt="pycharminterpreter2.png"></p>
 <p>go to PyCharm interpreter setting page, you can see all libraries reside under the virtual environment</p>
-<p><img src="https://p.130014.xyz/2021/01/11/pycharmlibrary.png" alt="pycharmlibrary.png"></p>
+<p><img src="/img/screenshots/pycharmlibrary.png" alt="pycharmlibrary.png"></p>
 <p>VS Code is also very similar with <code>venv</code> setting, open project folder <code>/home/user/pydev2</code> then click left part of status bar (at bottom), choose “Python 3.8.3 64-bit (‘pydev2’: pipenv)” from prompt window</p>
-<p><img src="https://p.130014.xyz/2021/01/11/vscodepipenv.png" alt="vscodepipenv.png"></p>
-<p><img src="https://p.130014.xyz/2021/01/11/vscodeinterpreter2.png" alt="vscodeinterpreter2.png"></p>
+<p><img src="/img/screenshots/vscodepipenv.png" alt="vscodepipenv.png"></p>
+<p><img src="/img/screenshots/vscodeinterpreter2.png" alt="vscodeinterpreter2.png"></p>
 <h2 id="Conda-environment-and-package-management-tool"><a href="#Conda-environment-and-package-management-tool" class="headerlink" title="Conda environment and package management tool"></a>Conda environment and package management tool</h2><p>From personal perspective, my favorite environment and package management tool is conda, by leveraging powerful CLI tool and  makes your work never become such easy and clear. With conda, you can create, export, list, remover, and update environments that have different versions of Python and/or packages installed in them. Switching or moving between environments is called activating the environment. You can also share an environment file.</p>
 <h3 id="Create-a-conda-virtual-environment-with-CLI"><a href="#Create-a-conda-virtual-environment-with-CLI" class="headerlink" title="Create a conda virtual environment with CLI"></a>Create a conda virtual environment with CLI</h3><p>In Linux like <code>centos</code> or <code>ubuntu</code>, decompress <code>miniconda</code> package to our home directory, now we are good to go to create conda environment</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create --name pydev</span><br></pre></td></tr></table></figure>
@@ -201,15 +201,15 @@
 </blockquote>
 </li>
 </ul>
-<p><img src="https://p.130014.xyz/2021/01/12/condacreate.png" alt="condacreate.png"></p>
+<p><img src="/img/screenshots/condacreate.png" alt="condacreate.png"></p>
 <h3 id="Launch-and-exit-conda-environment"><a href="#Launch-and-exit-conda-environment" class="headerlink" title="Launch and exit conda environment"></a>Launch and exit conda environment</h3><p>To activate conda environment:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda activate pydev</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://p.130014.xyz/2021/01/12/condaact.png" alt="condaact.png"></p>
+<p><img src="/img/screenshots/condaact.png" alt="condaact.png"></p>
 <p>To exit conda environment:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda deactivate</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://p.130014.xyz/2021/01/12/condadeact.png" alt="condadeact.png"></p>
+<p><img src="/img/screenshots/condadeact.png" alt="condadeact.png"></p>
 <blockquote>
 <p><code>conda activate</code> and <code>conda deactivate</code> only work on conda 4.6 and later versions. For conda versions prior to 4.6, run:</p>
 <blockquote>
@@ -226,7 +226,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda env list</span><br></pre></td></tr></table></figure>
 
 <p>A list similar to the following is displayed:</p>
-<p><img src="https://p.130014.xyz/2021/01/12/condaenvlist.png" alt="condaenvlist.png"></p>
+<p><img src="/img/screenshots/condaenvlist.png" alt="condaenvlist.png"></p>
 <blockquote>
 <p>asterisk tells current activate environment</p>
 </blockquote>
@@ -243,17 +243,17 @@
 
 </li>
 </ul>
-<p><img src="https://p.130014.xyz/2021/01/12/condapkglist.png" alt="condapkglist.png"></p>
+<p><img src="/img/screenshots/condapkglist.png" alt="condapkglist.png"></p>
 <h3 id="Build-identical-conda-environments"><a href="#Build-identical-conda-environments" class="headerlink" title="Build identical conda environments"></a>Build identical conda environments</h3><p>You can use explicit specification files to build an identical conda environment on the same operating system platform, either on the same machine or on a different machine.</p>
 <p>Use the terminal or an Anaconda Prompt for the following steps:</p>
 <ol>
 <li><p>Run <code>conda list --explicit</code> to produce a spec list such as:</p>
-<p><img src="https://p.130014.xyz/2021/01/12/condapkgrqmtlist.png" alt="condapkgrqmtlist.png"></p>
+<p><img src="/img/screenshots/condapkgrqmtlist.png" alt="condapkgrqmtlist.png"></p>
 </li>
 <li><p>To create this spec list as a file in the current working directory, run:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda list -e &gt; spec-file.txt</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://p.130014.xyz/2021/01/12/condapkgrqmtfile.png" alt="condapkgrqmtfile.png"></p>
+<p><img src="/img/screenshots/condapkgrqmtfile.png" alt="condapkgrqmtfile.png"></p>
 <blockquote>
 <p>tip: You can use <code>spec-file.txt</code> as the filename or replace it with a filename of your choice.</p>
 </blockquote>
@@ -265,8 +265,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install --name myenv --file spec-file.txt</span><br></pre></td></tr></table></figure>
 
 <p><strong>Conda does not check architecture or dependencies when installing from a spec file</strong>. To ensure that the packages work correctly, make sure that the file was created from a working environment, and use it on the same architecture, operating system, and platform, such as linux-64 or osx-64.</p>
-<p><img src="https://p.130014.xyz/2021/01/12/condapydev2.png" alt="condapydev2.png"></p>
-<p><img src="https://p.130014.xyz/2021/01/12/condapydev2show.png" alt="condapydev2show.png"></p>
+<p><img src="/img/screenshots/condapydev2.png" alt="condapydev2.png"></p>
+<p><img src="/img/screenshots/condapydev2show.png" alt="condapydev2show.png"></p>
 </li>
 </ol>
 <h3 id="Clone-an-environment"><a href="#Clone-an-environment" class="headerlink" title="Clone an environment"></a>Clone an environment</h3><p>Use the terminal or an Anaconda Prompt for the following steps:</p>
@@ -292,8 +292,8 @@
 </blockquote>
 </li>
 <li><p>Email or copy the exported <code>environment.yml</code> file to the other person.</p>
-<p><img src="https://p.130014.xyz/2021/01/12/condaenv_yml.png" alt="condaenv_yml.png"></p>
-<p><img src="https://p.130014.xyz/2021/01/12/condaymlvim.png" alt="condaymlvim.png"></p>
+<p><img src="/img/screenshots/condaenv_yml.png" alt="condaenv_yml.png"></p>
+<p><img src="/img/screenshots/condaymlvim.png" alt="condaymlvim.png"></p>
 </li>
 </ol>
 <h3 id="Restore-an-environment"><a href="#Restore-an-environment" class="headerlink" title="Restore an environment"></a>Restore an environment</h3><p>Conda keeps a history of all the changes made to your environment, so you can easily “roll back” to a previous version. To list the history of each change to the current environment: <code>conda list --revisions</code></p>
