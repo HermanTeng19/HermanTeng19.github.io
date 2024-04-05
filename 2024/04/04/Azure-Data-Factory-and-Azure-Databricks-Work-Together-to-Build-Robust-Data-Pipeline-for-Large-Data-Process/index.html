@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Azure Data Factory and Azure Databricks Work Together to Build Robust Data Pipeline for Large Data Process - Herman-blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Icaurs - Hexo Theme"><meta name="msapplication-TileImage" content="/img/favicon1.ico"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Icaurs - Hexo Theme"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="Azure Data Factory is a cloud-based data integration service that allows you to create data-driven workflows in the Azure cloud for orchestrating and automating data movement and data transformation."><meta property="og:type" content="blog"><meta property="og:title" content="Azure Data Factory and Azure Databricks Work Together to Build Robust Data Pipeline for Large Data Process"><meta property="og:url" content="https://hermanteng19.github.io/2024/04/04/Azure-Data-Factory-and-Azure-Databricks-Work-Together-to-Build-Robust-Data-Pipeline-for-Large-Data-Process/"><meta property="og:site_name" content="Herman-blog"><meta property="og:description" content="Azure Data Factory is a cloud-based data integration service that allows you to create data-driven workflows in the Azure cloud for orchestrating and automating data movement and data transformation."><meta property="og:locale" content="en_US"><meta property="og:image" content="https://i.ibb.co/dBw14xC/pasted-image-0-1-1-793x270.png"><meta property="article:published_time" content="2024-04-04T13:00:52.000Z"><meta property="article:modified_time" content="2024-04-05T19:42:03.667Z"><meta property="article:author" content="Herman Teng"><meta property="article:tag" content="Azure"><meta property="article:tag" content="ADF"><meta property="article:tag" content="ADB"><meta property="article:tag" content="Databricks"><meta property="article:tag" content="Datafactory"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="https://i.ibb.co/dBw14xC/pasted-image-0-1-1-793x270.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://hermanteng19.github.io/2024/04/04/Azure-Data-Factory-and-Azure-Databricks-Work-Together-to-Build-Robust-Data-Pipeline-for-Large-Data-Process/"},"headline":"Herman-blog","image":["https://i.ibb.co/dBw14xC/pasted-image-0-1-1-793x270.png"],"datePublished":"2024-04-04T13:00:52.000Z","dateModified":"2024-04-05T19:42:03.667Z","author":{"@type":"Person","name":"Herman Teng"},"description":"Azure Data Factory is a cloud-based data integration service that allows you to create data-driven workflows in the Azure cloud for orchestrating and automating data movement and data transformation."}</script><link rel="canonical" href="https://hermanteng19.github.io/2024/04/04/Azure-Data-Factory-and-Azure-Databricks-Work-Together-to-Build-Robust-Data-Pipeline-for-Large-Data-Process/"><link rel="icon" href="/img/favicon1.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/avatar1.png" alt="Herman-blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="https://i.ibb.co/dBw14xC/pasted-image-0-1-1-793x270.png" alt="Azure Data Factory and Azure Databricks Work Together to Build Robust Data Pipeline for Large Data Process"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-04-04T13:00:52.000Z" title="2024-04-04T13:00:52.000Z">2024-04-04</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-04-05T19:42:03.667Z" title="2024-04-05T19:42:03.667Z">2024-04-05</time></span><span class="level-item">8 minutes read (About 1163 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">Azure Data Factory and Azure Databricks Work Together to Build Robust Data Pipeline for Large Data Process</h1><div class="content"><p><strong>Azure Data Factory</strong> is a cloud-based data integration service that allows you to create data-driven workflows in the Azure cloud for orchestrating and automating data movement and data transformation. If you are familiar with Microsoft <code>BIDS</code> (Business Intelligent Development Suit) and used to use <code>SSIS</code> (SQL Server Integration Service) on-prem, you might see Azure Data Factory (we will call it ADF) as a counterpart of SSIS on Azure cloud. <code>ADF</code> is also a key component if you’re looking to data migration on cloud.</p>
+<p>ADF is actually a data platform that allows users to create a workflow that can ingest data from both on-prem and cloud data stores, and transform or process data by using integrated computing service such as <code>Synapse</code> and <code>Azure Databricks</code> (we will call it ADB). Then, the results can be published to an on-prem or could data store e.g. SQL Server or Azure SQL Database for business intelligence (BI) applications (Tableau or PowerBI) to consume.</p>
+<p>ADF inherit most of key components from SSIS such as <code>Stored Procedure</code> and <code>Script</code>. By leveraging powerful data processing capabilities of Stored Procedure, you can conduct almost any data manipulation and transformation; Script is fully compatible T-SQL syntax so that you can execute your business logic in a programming way not only SQL statement. Besides that, the most powerful component is ADB support. ADB is now data engineering industry standard, we talked about it many time on previous post. Now, let’s see how do we efficiently proceed out data using ADF and ADB.</p>
+<a id="more"></a>
+
+<p> By considering the common development practice, the most used functions in ADF are <code>Stored Procedure</code>, <code>Script</code> and <code>Notebook</code>. In this use case, Store Procedure is for logging pipeline execution progress or exceptions; Script is for conducting pre-validation and checking; Notebook is conducting the main data process and business logics.</p>
+<h2 id="SSIS-and-ADF-Comparison"><a href="#SSIS-and-ADF-Comparison" class="headerlink" title="SSIS and ADF Comparison"></a>SSIS and ADF Comparison</h2><p>SSIS is one of the most powerful ETL tool for on-prem architect; ADF is the one for Azure cloud, they are very similar because they are all Microsoft product, I would say if you use SSIS before then almost no adopt and pickup cost on ADF, we can do a simple comparison between these two different era product</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>SSIS</th>
+<th>ADF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Name</td>
+<td>SQL Server Integration Service</td>
+<td>Azure Data Factory</td>
+</tr>
+<tr>
+<td>Platform</td>
+<td>On-Premise</td>
+<td>Azure Cloud</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Package (dtsx)</td>
+<td>Pipeline</td>
+</tr>
+<tr>
+<td>Editing</td>
+<td>SSIS Toolbox</td>
+<td>Author</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>SSIS Connection Manager</td>
+<td>Linked Service</td>
+</tr>
+<tr>
+<td>Ingestion</td>
+<td>Data Flow Task</td>
+<td>Data flow</td>
+</tr>
+<tr>
+<td>Function Group</td>
+<td>SSIS Control Flow Item</td>
+<td>Activities</td>
+</tr>
+<tr>
+<td>Computing</td>
+<td>SQL Server Database Engine</td>
+<td>Integration runtimes</td>
+</tr>
+<tr>
+<td>Output Format</td>
+<td>XML</td>
+<td>JSON</td>
+</tr>
+<tr>
+<td>Git Integration</td>
+<td>N/A</td>
+<td>Available</td>
+</tr>
+<tr>
+<td>Deployment Template</td>
+<td>N/A</td>
+<td>ARM template</td>
+</tr>
+<tr>
+<td>Data Source/Target</td>
+<td>SSIS Connection Manager</td>
+<td>Datasets</td>
+</tr>
+<tr>
+<td>Component Logic</td>
+<td>Connection Arrow</td>
+<td>Lookup activity</td>
+</tr>
+</tbody></table>
+<h2 id="Setup-Parameters-for-Pipeline"><a href="#Setup-Parameters-for-Pipeline" class="headerlink" title="Setup Parameters for Pipeline"></a>Setup Parameters for Pipeline</h2><p>we don’t use <code>parameters</code> very often in SSIS but <code>variables</code>, but in ADF that is very important and put in very obvious place in pipeline main edit window. Parameters provides interface within pipeline’s activities, especially with ADB notebook. That is the main way to pass global parameter value to ADB notebook for data processing. Setup parameters is very easy by GUI, just click new button and fill in name, type and default value. </p>
+<p><img src="https://i.ibb.co/Q9sqzHm/IMG-20240405-091824.jpg" alt="ADF Parameter Setup"></p>
+<h2 id="Create-Base-Parameters-for-ADB-Notebook"><a href="#Create-Base-Parameters-for-ADB-Notebook" class="headerlink" title="Create Base Parameters for ADB Notebook"></a>Create Base Parameters for ADB Notebook</h2><p>when we integrate ADB data process in ADF pipeline, ADB notebook usually has dependencies either with other activity or pipeline. In another word, ADB either needs to receive values for its parameters or provides output for other activity. In our use case, out ADB notebook has values for its 3 parameters</p>
+<ol>
+<li>notebook_path: directory which the notebook located in DBFS</li>
+<li>configuration_file: JSON file which notebook needs to parse and retrieve values from</li>
+<li>environment_params: environment indicator, DEV, SIT, PAT, PROD</li>
+</ol>
+<p>We first create a <code>Notebook</code> activity, then choose proper connection in Databricks <code>Linked Service</code> to be able to create handshake with ADB. </p>
+<p><img src="https://i.ibb.co/YPbTM3R/IMG-20240405-091847.jpg" alt="Create Notebook Activity"></p>
+<p>Now, let’s move to <code>Setting</code> tab to configurate the activity parameters for ADB notebook. In <code>Notebook path</code>, it’s very obvious, we need to provide the directory information, here we would use the value from pipeline parameter of <code>notebook_path</code></p>
+<p><img src="https://i.ibb.co/hgm7gyy/IMG-20240405-091918.jpg" alt="Notebook path configuration"></p>
+<p>Next, it’s <code>Base parameters</code> on programming within the ADB notebook, we need to pass value of <code>configuration_file</code> and <code>environment_params</code> to ADB through the pipeline parameters.</p>
+<p><img src="https://i.ibb.co/6PkpHJ7/IMG-20240405-091944.jpg" alt="ADB base parameters"></p>
+<h2 id="ADB-Reading-the-Parameters-Passed-from-ADF"><a href="#ADB-Reading-the-Parameters-Passed-from-ADF" class="headerlink" title="ADB Reading the Parameters Passed from ADF"></a>ADB Reading the Parameters Passed from ADF</h2><p>We have done everything in ADF and next we will take look at ADB notebook to see how do we receive the value from ADF. We need to use <code>dbutils</code> function to get the value from outside ADB</p>
+<blockquote>
+<p>dbutils.widgets.get(“<parameter name>“)</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">configuration_file = dbutils.widgets.get(<span class="string">&quot;configuration_file&quot;</span>)</span><br><span class="line">environment_params = dbutils.widgets.get(<span class="string">&quot;environment_params&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%run ../config/env_config $configuration_file = $configuration_file $environment_params = $environment_params</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.ibb.co/JjdTFn2/IMG-20240405-105457.jpg" alt="ADB Parameters"></p>
+<h2 id="Work-with-ADF-Stored-Procedure"><a href="#Work-with-ADF-Stored-Procedure" class="headerlink" title="Work with ADF Stored Procedure"></a>Work with ADF Stored Procedure</h2><p>It’s very similar with SSIS <code>Execute SQL Task</code>, ADF named it as <code>Store Procedure</code> to execute stored procedure in AZ SQL database. The main configuration is on <code>Setting</code> tab and it allows us choose AZ SQL database from pre-defined Linked Service and stored procedure from drop-down list once we connect to SQL database.  It also lists all parameters of the store procedure with their type and we can assign default value for them by hard coding or pipeline variables.</p>
+<p><img src="https://i.ibb.co/syv7LP0/IMG-20240405-142303.jpg" alt="ADF Stored Procedure"></p>
+<h2 id="Work-with-Script-Activity"><a href="#Work-with-Script-Activity" class="headerlink" title="Work with Script Activity"></a>Work with Script Activity</h2><p>Another very useful activity/function is <code>Script</code>, we can run T-SQL script with both condition and looping logic against SQL statement. We can also pass value for script parameter from pipeline parameter/variable in <code>Script parameters</code> setting. For example, our script needs value from pipeline parameter for extract starting date (extractFrom), then we create a parameter <code>extractFrom</code>, define type as <strong>Datetime</strong>, value is <strong>pipeling().parameters.ExtracFrom</strong>. Then we can use that parameter in our script.</p>
+<p><img src="https://i.ibb.co/FVgfBBk/IMG-20240405-142827.jpg" alt="ADF Script Setting"></p>
+<p><img src="https://i.ibb.co/S7k3LDg/IMG-20240405-142850.jpg" alt="Script Code Snippet"></p>
+<h2 id="Work-with-Lookup-Activity"><a href="#Work-with-Lookup-Activity" class="headerlink" title="Work with Lookup Activity"></a>Work with Lookup Activity</h2><p>In SSIS, we need to manually setup input/output parameter in <code>Execute SQL Task</code> for other component lookup, but in ADF, it has separated activity <code>Lookup</code> to provide output value for other activities. In our use case,  we create Lookup activity, in <code>Setting</code>-&gt;<code>Query</code>, we write our query here for output value <code>EXTRACT_DATE</code>.</p>
+<p><img src="https://i.ibb.co/ZMzRcsL/IMG-20240405-151544.jpg" alt="ADF Lookup Activity"></p>
+<p>We will use that output extract date in our <code>Copy data</code> activity.</p>
+<p><img src="https://i.ibb.co/dpB9qvq/IMG-20240405-151617.jpg" alt="ADF Copy Data Activity"></p>
+<p><img src="https://i.ibb.co/xMcgNLj/IMG-20240405-151718.jpg" alt="ADF Copy Data Query"></p>
+<p>Our name of loop up activity is “Lookup Extract From”, in query where clause, we use that activity output first row of EXTRACT_DATE.</p>
+</div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Azure/">Azure</a><a class="link-muted mr-2" rel="tag" href="/tags/ADF/">ADF</a><a class="link-muted mr-2" rel="tag" href="/tags/ADB/">ADB</a><a class="link-muted mr-2" rel="tag" href="/tags/Databricks/">Databricks</a><a class="link-muted mr-2" rel="tag" href="/tags/Datafactory/">Datafactory</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/03/28/Azure-Databricks-Notebooks-Modulization-and-Interaction/"><span class="level-item">Azure Databricks Notebooks Modulization and Interaction</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'https://hermanteng19.github.io/2024/04/04/Azure-Data-Factory-and-Azure-Databricks-Work-Together-to-Build-Robust-Data-Pipeline-for-Large-Data-Process/';
+            this.page.identifier = '2024/04/04/Azure-Data-Factory-and-Azure-Databricks-Work-Together-to-Build-Robust-Data-Pipeline-for-Large-Data-Process/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'herman-hexo-blog' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/avatar1.png" alt="Herman"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Herman</p><p class="is-size-6 is-block">Data Analyst&amp;Developer</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Toronto, Canada</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">25</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">8</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">69</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/HermanTeng19" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/HermanTeng19"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#SSIS-and-ADF-Comparison"><span class="level-left"><span class="level-item">1</span><span class="level-item">SSIS and ADF Comparison</span></span></a></li><li><a class="level is-mobile" href="#Setup-Parameters-for-Pipeline"><span class="level-left"><span class="level-item">2</span><span class="level-item">Setup Parameters for Pipeline</span></span></a></li><li><a class="level is-mobile" href="#Create-Base-Parameters-for-ADB-Notebook"><span class="level-left"><span class="level-item">3</span><span class="level-item">Create Base Parameters for ADB Notebook</span></span></a></li><li><a class="level is-mobile" href="#ADB-Reading-the-Parameters-Passed-from-ADF"><span class="level-left"><span class="level-item">4</span><span class="level-item">ADB Reading the Parameters Passed from ADF</span></span></a></li><li><a class="level is-mobile" href="#Work-with-ADF-Stored-Procedure"><span class="level-left"><span class="level-item">5</span><span class="level-item">Work with ADF Stored Procedure</span></span></a></li><li><a class="level is-mobile" href="#Work-with-Script-Activity"><span class="level-left"><span class="level-item">6</span><span class="level-item">Work with Script Activity</span></span></a></li><li><a class="level is-mobile" href="#Work-with-Lookup-Activity"><span class="level-left"><span class="level-item">7</span><span class="level-item">Work with Lookup Activity</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="column-right-shadow is-hidden-widescreen"></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/avatar1.png" alt="Herman-blog" height="28"></a><p class="is-size-7"><span>&copy; 2024 Herman Teng</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
